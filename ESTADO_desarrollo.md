@@ -4,7 +4,7 @@
 
 ## Fase actual
 
-**Fase 3 (base del monorepo): pasos 1 a 3 hechos.** `flutter_shared` publicado: PRs #1 a #6 mergeados y etiquetas `core_utils-v0.1.2`, `core_di-v0.1.2`, `core_events-v0.2.0`, `core_ui-v0.1.2`, `core_contracts-v0.1.4` y `storage_isar-v0.3.0`. Workspace de Alba (paso 2) y contratos nuevos (paso 3) subidos a `alba_home`: raíz directa en `main` y PRs #1 app, #2 core_audio, #3 core_alarm_scheduler, #4 core_battery y #5 core_display, independientes entre sí y con `verify` en verde cada uno. Siguiente: paso 4, `design_system`.
+**Fase 3 (base del monorepo): pasos 1 a 3 hechos.** `flutter_shared` publicado: PRs #1 a #6 mergeados y etiquetas `core_utils-v0.1.2`, `core_di-v0.1.2`, `core_events-v0.2.0`, `core_ui-v0.1.2`, `core_contracts-v0.1.4` y `storage_isar-v0.3.0`. Workspace de Alba (paso 2) y contratos nuevos (paso 3) en `alba_home`: raíz directa en `main` y PRs #1 app, #2 core_audio, #3 core_alarm_scheduler, #4 core_battery y #5 core_display mergeados el 2026-11-22. Siguiente: paso 4, `design_system`.
 
 ### flutter_shared (paso 1)
 
