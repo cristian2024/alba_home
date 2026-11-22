@@ -1,0 +1,25 @@
+name: core_alarm_scheduler
+description: Contrato para programar alarmas exactas que suenan aunque la app esté cerrada (AlarmScheduler), con sus tests de contrato y un doble en memoria.
+version: 0.1.0
+publish_to: none
+
+environment:
+  sdk: ^3.11.0
+
+resolution: workspace
+
+dependencies:
+  # Solo para los tests de contrato de `package:core_alarm_scheduler/testing.dart`.
+  async: ^2.11.0
+  core_utils:
+    git:
+      url: https://github.com/cristian2024/flutter_shared.git
+      path: packages/shared/core_utils
+      tag_pattern: core_utils-v{{version}}
+    version: ^0.1.2
+  equatable: ^3.0.0
+  # Solo para los tests de contrato de `package:core_alarm_scheduler/testing.dart`.
+  test: ^1.28.0
+
+dev_dependencies:
+  flutter_lints: ^6.0.0
