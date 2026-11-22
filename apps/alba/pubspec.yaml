@@ -1,0 +1,28 @@
+name: alba
+description: Reloj de mesa de noche y cocina. Punto de composición de Alba, que ensambla los plugins y elige los adaptadores.
+publish_to: none
+version: 0.1.0+1
+
+environment:
+  sdk: ^3.11.0
+  flutter: ">=3.27.0"
+
+resolution: workspace
+
+dependencies:
+  core_di:
+    git:
+      url: https://github.com/cristian2024/flutter_shared.git
+      path: packages/core/core_di
+      tag_pattern: core_di-v{{version}}
+    version: ^0.1.2
+  flutter:
+    sdk: flutter
+
+dev_dependencies:
+  flutter_lints: ^6.0.0
+  flutter_test:
+    sdk: flutter
+
+flutter:
+  uses-material-design: true
