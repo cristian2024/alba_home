@@ -38,6 +38,27 @@ void main() {
     });
   }
 
+  for (final (String name, Size size) in <(String, Size)>[
+    ('el aparato en horizontal', const Size(AppLayout.screenWidth, AppLayout.screenHeight)),
+    ('un teléfono en vertical', const Size(AppLayout.screenHeight, AppLayout.screenWidth)),
+  ]) {
+    testWidgets('la galería no desborda en $name: las secciones anchas se desplazan en horizontal', (WidgetTester tester) async {
+      tester.view
+        ..physicalSize = size
+        ..devicePixelRatio = 1;
+      addTearDown(tester.view.reset);
+
+      await tester.pumpWidget(const GalleryApp());
+      await tester.pumpAndSettle();
+
+      expect(tester.takeException(), isNull);
+      final Iterable<SingleChildScrollView> horizontal = tester
+          .widgetList<SingleChildScrollView>(find.byType(SingleChildScrollView))
+          .where((SingleChildScrollView view) => view.scrollDirection == Axis.horizontal);
+      expect(horizontal, isNotEmpty);
+    });
+  }
+
   testWidgets('el interruptor cambia de tema', (WidgetTester tester) async {
     tester.view
       ..physicalSize = const Size(_sheetWidth, 8000)

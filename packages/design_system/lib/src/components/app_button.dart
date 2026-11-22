@@ -79,6 +79,7 @@ class AppButton extends StatelessWidget {
       pressedColor: colors.pressed,
       borderColor: colors.border,
       borderRadius: BorderRadius.circular(AppRadii.full),
+      splashColor: colors.splash,
       semanticLabel: semanticLabel ?? label,
       child: SizedBox(
         height: large ? AppSizes.controlLarge : AppSizes.controlMedium,
@@ -157,4 +158,11 @@ class AppButtonColors {
   final Color pressed;
   final Color foreground;
   final Color? border;
+
+  /// Onda al pulsar: el color del texto, translúcido.
+  Color get splash => foreground.withValues(alpha: splashOpacity);
+
+  /// Opacidad de la onda. Penpot no la define: está elegida para que se vea
+  /// sobre el ámbar y sobre el negro de noche sin tapar la etiqueta.
+  static const double splashOpacity = 0.24;
 }

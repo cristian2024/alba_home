@@ -72,11 +72,22 @@ class _Section extends StatelessWidget {
         children: <Widget>[
           _Heading(title),
           if (sub != null) Text(sub, style: AppTypography.body.copyWith(color: theme.textSecondary)),
-          ...children,
+          // Las filas de la hoja de Penpot son más anchas que la pantalla:
+          // cada una se desplaza en horizontal.
+          for (final Widget child in children) _HorizontalScroll(child: child),
         ],
       ),
     );
   }
+}
+
+class _HorizontalScroll extends StatelessWidget {
+  const _HorizontalScroll({required this.child});
+
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) => SingleChildScrollView(scrollDirection: Axis.horizontal, child: child);
 }
 
 class _Caption extends StatelessWidget {

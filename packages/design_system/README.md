@@ -25,7 +25,7 @@ Esos archivos no se editan a mano. Un test falla si no coinciden con el JSON, as
 
 `AppTheme.light` y `AppTheme.dark` siguen el tema del sistema. `AppTheme.night` es el modo noche del reloj: fondo negro y texto ámbar.
 
-El sistema es plano: no tiene sombras, ni tinte de superficie, ni salpicadura al pulsar.
+El sistema es plano: no tiene sombras ni tinte de superficie. Al pulsar, el fondo baja un paso; los botones (`AppButton`, `AppIconButton`) hacen además una onda del color de su texto (`AppPressable.splashColor`), y el resto de lo pulsable no.
 
 Los componentes con variantes de Penpot reciben `AppTone`:
 - `surface`: sobre el lienzo.
@@ -40,7 +40,7 @@ Los estados y avisos reciben además `AppUrgency`: `normal`, `warning` (ocre) o 
 | :--- | :--- | :--- |
 | `AppButton` | `Button/Large`, `Button/Standard` | Píldora de 72 o 48 con icono opcional. Variantes `primary`, `secondary`, `ghost`, `danger`, `night` y `nightPrimary`. |
 | `AppIconButton` | `Button/Icon72`, `Button/Icon48` | Círculo de 72 o 48. `semanticLabel` obligatorio («Pausar Pasta»). |
-| `AppPressable` | — | La base de lo pulsable: color al pulsar, anillo de foco de 3 px, semántica de botón y atenuado sin `onTap`. |
+| `AppPressable` | — | La base de lo pulsable: color al pulsar, onda opcional (`splashColor`), anillo de foco de 3 px, semántica de botón y atenuado sin `onTap`. |
 | `AppClockTime` | `Clock/Time/*` | La hora a 205, 160, 96 o 56, en cifras tabulares. |
 | `AppStatusBlock` | `Status/Block/*` | Icono, valor y etiqueta, de 140 × 120, a los lados de la hora. |
 | `AppStatusCapsule` | `Status/Capsule/*` | Píldora de 60 con icono y texto. Pulsable si recibe `onTap`. |
@@ -64,6 +64,7 @@ Los estados y avisos reciben además `AppUrgency`: `normal`, `warning` (ocre) o 
 - **La hora:** usa cifras tabulares, no una caja fija por dígito, como pide `DESIGN.md`. El espacio alrededor de los dos puntos es algo más estrecho.
 - **Botón que ocupa el hueco** (`expand`): baja el relleno lateral a 16. Así cabe «1 min» en la tarjeta de temporizador, donde las cifras tabulares lo hacen más ancho que en Penpot.
 - **Pulsado de `nightPrimary`:** baja a `night.text-secondary`, porque Penpot no define ese estado.
+- **Onda en los botones:** `DESIGN.md` describe el pulsado solo como un cambio de fondo; la onda se añadió a petición, con el color del texto al 24 %.
 
 ## Licencias
 
@@ -74,7 +75,7 @@ Quien publica una app llama a `registerDesignSystemLicenses()` al arrancar.
 
 ## Galería y tests
 
-`example/` es una galería con las mismas secciones que `design/referencia_penpot/hojas/01_componentes_<tema>.png` y un interruptor de tema. Para compararla con las hojas a la misma escala:
+`example/` es una galería con las mismas secciones que `design/referencia_penpot/hojas/01_componentes_<tema>.png` y un interruptor de tema. Las filas, más anchas que la pantalla, se desplazan en horizontal; un test comprueba que no desborda a 891 × 411 ni en vertical. Para compararla con las hojas a la misma escala:
 
 ```sh
 cd packages/design_system/example

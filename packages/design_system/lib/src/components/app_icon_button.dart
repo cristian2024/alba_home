@@ -37,6 +37,7 @@ class AppIconButton extends StatelessWidget {
       pressedColor: colors.pressed,
       borderColor: colors.border,
       borderRadius: BorderRadius.circular(AppRadii.full),
+      splashColor: colors.splash,
       semanticLabel: semanticLabel,
       child: SizedBox.square(
         dimension: side,

@@ -101,6 +101,50 @@ void main() {
       semantics.dispose();
     });
 
+    testWidgets('los botones hacen una onda al pulsar, cambian de fondo y siguen funcionando', (WidgetTester tester) async {
+      int taps = 0;
+      await pumpOnDevice(
+        tester,
+        Row(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            AppButton(label: 'Posponer', onPressed: () => taps++),
+            AppIconButton(icon: AppIcons.pause, semanticLabel: 'Pausar', onPressed: () => taps++),
+          ],
+        ),
+      );
+      final Finder button = find.byType(AppButton);
+      final InkWell ink = tester.widget<InkWell>(find.descendant(of: button, matching: find.byType(InkWell)));
+      expect(ink.splashColor, AppThemeColors.light.textOnBrand.withValues(alpha: AppButtonColors.splashOpacity));
+      expect(find.descendant(of: find.byType(AppIconButton), matching: find.byType(InkWell)), findsOneWidget);
+
+      final TestGesture gesture = await tester.startGesture(tester.getCenter(button));
+      await tester.pump(const Duration(milliseconds: 100));
+      expect(backgroundOf(tester, button), AppThemeColors.light.actionPrimaryPressed);
+      final RenderObject inkLayer = tester.renderObject(
+        find.descendant(of: button, matching: find.byType(Material)).first,
+      );
+      expect(inkLayer, paints..circle());
+      await gesture.up();
+      await tester.pumpAndSettle();
+      expect(backgroundOf(tester, button), AppThemeColors.light.actionPrimaryDefault);
+
+      await tester.tap(find.bySemanticsLabel('Pausar'));
+      expect(taps, 2);
+    });
+
+    testWidgets('un botón desactivado no hace onda', (WidgetTester tester) async {
+      await pumpOnDevice(tester, const AppButton(label: 'Posponer', onPressed: null));
+
+      expect(find.descendant(of: find.byType(AppButton), matching: find.byType(InkWell)), findsNothing);
+    });
+
+    testWidgets('las fichas y filas no hacen onda', (WidgetTester tester) async {
+      await pumpOnDevice(tester, AppSavedChip(label: 'Pasta', duration: '10 min', onTap: () {}));
+
+      expect(find.byType(InkWell), findsNothing);
+    });
+
     testWidgets('AppButton usa semanticLabel con el nombre del objeto', (WidgetTester tester) async {
       final SemanticsHandle semantics = tester.ensureSemantics();
       await pumpOnDevice(

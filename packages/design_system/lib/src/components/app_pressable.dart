@@ -1,4 +1,4 @@
-import 'package:flutter/widgets.dart';
+import 'package:flutter/material.dart';
 
 import '../tokens/app_opacity.dart';
 import '../tokens/app_sizes.dart';
@@ -7,6 +7,9 @@ import '../tokens/app_theme_colors.dart';
 /// Superficie pulsable plana: cambia a [pressedColor] mientras se pulsa,
 /// muestra el anillo de foco de 3 px con teclado o Switch Access y se anuncia
 /// como botón. Sin [onTap] queda desactivada (atenuada al 40 %).
+///
+/// Con [splashColor], además, una onda sale del punto que se toca (la usan
+/// los botones).
 ///
 /// Es la base de los botones, fichas, filas y tarjetas pulsables; sirve
 /// también para controles propios.
@@ -23,6 +26,7 @@ class AppPressable extends StatefulWidget {
     this.selected,
     this.toggled,
     this.focusColor,
+    this.splashColor,
   });
 
   final VoidCallback? onTap;
@@ -43,6 +47,9 @@ class AppPressable extends StatefulWidget {
 
   /// Color del anillo de foco; por defecto `borderFocus` del tema.
   final Color? focusColor;
+
+  /// Color de la onda al pulsar; sin él no hay onda.
+  final Color? splashColor;
 
   @override
   State<AppPressable> createState() => _AppPressableState();
@@ -66,13 +73,31 @@ class _AppPressableState extends State<AppPressable> {
     final Color? background = _pressed && enabled ? (widget.pressedColor ?? widget.color) : widget.color;
     final Color? border = widget.borderColor;
     final Color focus = widget.focusColor ?? AppThemeColors.of(context).borderFocus;
+    final Color? splash = widget.splashColor;
+    final bool withSplash = splash != null && enabled;
     final Widget surface = DecoratedBox(
       decoration: BoxDecoration(
         color: background,
         borderRadius: widget.borderRadius,
         border: border == null ? null : Border.all(color: border, width: AppSizes.strokeThin),
       ),
-      child: widget.child,
+      child: withSplash
+          ? Material(
+              type: MaterialType.transparency,
+              child: InkWell(
+                onTap: _onTap,
+                onHighlightChanged: _setPressed,
+                canRequestFocus: false,
+                excludeFromSemantics: true,
+                splashColor: splash,
+                highlightColor: Colors.transparent,
+                hoverColor: Colors.transparent,
+                splashFactory: InkRipple.splashFactory,
+                customBorder: RoundedRectangleBorder(borderRadius: widget.borderRadius),
+                child: widget.child,
+              ),
+            )
+          : widget.child,
     );
     return Semantics(
       button: true,
@@ -89,10 +114,11 @@ class _AppPressableState extends State<AppPressable> {
         },
         child: GestureDetector(
           behavior: HitTestBehavior.opaque,
-          onTap: _onTap,
-          onTapDown: enabled ? (TapDownDetails details) => _setPressed(true) : null,
-          onTapUp: enabled ? (TapUpDetails details) => _setPressed(false) : null,
-          onTapCancel: enabled ? () => _setPressed(false) : null,
+          // Con onda, los toques los recibe el InkWell.
+          onTap: withSplash ? null : _onTap,
+          onTapDown: enabled && !withSplash ? (TapDownDetails details) => _setPressed(true) : null,
+          onTapUp: enabled && !withSplash ? (TapUpDetails details) => _setPressed(false) : null,
+          onTapCancel: enabled && !withSplash ? () => _setPressed(false) : null,
           child: Opacity(
             opacity: enabled ? 1 : AppOpacity.disabled,
             child: _focused
