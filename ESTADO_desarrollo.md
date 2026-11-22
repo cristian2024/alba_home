@@ -4,7 +4,7 @@
 
 ## Fase actual
 
-**Fase 3 (base del monorepo): pasos 1 a 3 hechos.** `flutter_shared` publicado: PRs #1 a #6 mergeados y etiquetas `core_utils-v0.1.2`, `core_di-v0.1.2`, `core_events-v0.2.0`, `core_ui-v0.1.2`, `core_contracts-v0.1.4` y `storage_isar-v0.3.0`. Workspace de Alba (paso 2) y contratos nuevos (paso 3) en `alba_home`: raíz directa en `main` y PRs #1 app, #2 core_audio, #3 core_alarm_scheduler, #4 core_battery y #5 core_display mergeados el 2026-11-22. Siguiente: paso 4, `design_system`.
+**Fase 3 (base del monorepo): pasos 1 a 4 hechos; falta la puerta (visto bueno).** `flutter_shared` publicado: PRs #1 a #6 mergeados y etiquetas `core_utils-v0.1.2`, `core_di-v0.1.2`, `core_events-v0.2.0`, `core_ui-v0.1.2`, `core_contracts-v0.1.4` y `storage_isar-v0.3.0`. Workspace de Alba (paso 2) y contratos nuevos (paso 3) en `alba_home`: raíz directa en `main` y PRs #1 app, #2 core_audio, #3 core_alarm_scheduler, #4 core_battery y #5 core_display mergeados el 2026-11-22. `design_system` (paso 4) con su galería, y `melos run verify` en verde con todo. Siguiente: visto bueno de la fase 3 y fase 4 (alarma).
 
 ### flutter_shared (paso 1)
 
@@ -35,6 +35,15 @@ Cuatro paquetes en `packages/core/` (añadido `packages/core/*` al workspace), D
 - `core_battery`: `BatteryReader` con `BatteryStatus` (nivel, `BatteryChargeState` con `notCharging`, temperatura en °C para 07.4) y `isPluggedIn` (07.1). Doble `InMemoryBatteryReader`.
 - `core_display`: `DisplayControl` (pantalla encendida, brillo 0–1 o el del sistema, inmersivo). Doble `InMemoryDisplayControl`.
 - Los dobles reenvían los cambios suscribiéndose al empezar a escuchar: con un generador `async*` se perdían los cambios que llegaban antes de pedir el siguiente evento (lo detectó el test de contrato).
+
+### design_system (paso 4)
+
+- `packages/design_system` 0.1.0, solo Flutter. Tokens generados por `tool/generate_tokens.dart` desde `tokens.json` y los iconos de `spec.json`; un test falla si lo versionado no coincide con el JSON.
+- Temas `AppTheme.light`, `.dark` y `.night`, planos. Variantes de Penpot con `AppTone` (superficie, foto, noche) y `AppUrgency`.
+- Inter 4.1 como asset y cifras tabulares en todos los estilos. Los 58 iconos se dibujan desde sus trazados de Penpot (M, L, H, V, Q, Z) con un parser propio, sin fuente de iconos.
+- 22 componentes de las 20 familias de `spec.json`, con semántica para TalkBack, anillo de foco y estado pulsado. 49 tests, que cargan Inter para medir como en el aparato.
+- Galería en `example/` con las secciones de `hojas/01_componentes_<tema>.png`; `flutter test --dart-define=GALLERY_OUT=<carpeta>` la captura a 2924 de ancho. Comparada con las hojas claro y oscuro: coincide salvo el espacio alrededor de los dos puntos de la hora (cifras tabulares en vez de cajas por dígito, como pide `DESIGN.md`).
+- Decisiones menores: el botón `expand` baja el relleno a 16 para que quepa «1 min» en la tarjeta (las cifras tabulares lo ensanchan); el pulsado de `nightPrimary` usa `night.text-secondary` (Penpot no lo define); el `Night-Primary` de botón es ámbar macizo como en `spec.json` aunque `DESIGN.md` lo describa con borde.
 
 ### Repo alba_home
 
