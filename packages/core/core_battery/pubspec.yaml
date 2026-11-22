@@ -1,0 +1,19 @@
+name: core_battery
+description: Contrato de lectura de la batería (BatteryReader) con nivel, estado de carga y temperatura, sus tests de contrato y un doble en memoria.
+version: 0.1.0
+publish_to: none
+
+environment:
+  sdk: ^3.11.0
+
+resolution: workspace
+
+dependencies:
+  # Solo para los tests de contrato de `package:core_battery/testing.dart`.
+  async: ^2.11.0
+  equatable: ^3.0.0
+  # Solo para los tests de contrato de `package:core_battery/testing.dart`.
+  test: ^1.28.0
+
+dev_dependencies:
+  flutter_lints: ^6.0.0
