@@ -21,7 +21,7 @@ Mismas pautas que home_tasks y la skill `flutter-guidelines`; aquí va lo propio
 - `apps/alba`: punto de composición (launcher, modo aparato). Solo él elige adaptadores.
 - `packages/core/*`: contratos propios de Alba (`core_audio`, `core_alarm_scheduler`, `core_battery`, `core_display`), Dart puro.
 - `packages/adapters/*`: tecnologías concretas. `packages/contracts/*`: lo que un plugin publica a otros. `packages/plugins/<funcionalidad>/`: `_domain`, `plugin_` con su `example/` y sus adaptadores. `packages/shared/*`: Dart puro reutilizable. `packages/design_system`.
-- La lista `workspace:` del `pubspec.yaml` raíz es un solo patrón con alternativas (`"{apps/alba,packages/core/*}"`): pub falla si una entrada no encuentra ningún paquete, y cada rama trae solo su proyecto. Al crear el primer paquete de una carpeta nueva, se añade como alternativa.
+- La lista `workspace:` del `pubspec.yaml` raíz es un solo patrón con alternativas (`"{apps/alba,packages/core/*,packages/design_system,packages/design_system/example}"`): pub falla si una entrada no encuentra ningún paquete, y cada rama trae solo su proyecto. Al crear el primer paquete de una carpeta nueva, se añade como alternativa.
 
 ## Paquetes compartidos (flutter_shared)
 - `core_di`, `core_events`, `core_contracts`, `core_utils`, `core_ui` y `storage_isar` vienen de https://github.com/cristian2024/flutter_shared por dependencia git con etiqueta y rango:
@@ -48,7 +48,9 @@ Mismas pautas que home_tasks y la skill `flutter-guidelines`; aquí va lo propio
 - Las de la skill `flutter-guidelines`: tipos explícitos (`always_specify_types`, `toleratedCodes` vacío en `tool/analyze.dart`), nada de funciones que devuelven widgets, widgets reutilizables agnósticos, getters privados para `widget.x` repetido, estilos del tema en variables al inicio de `build`, constantes en su `abstract final class`, nombres descriptivos, `Semantics` o `tooltip` en todo lo interactivo.
 - Dominio en Dart puro, UUID v4 y `DateTime` en UTC, con `Clock` e `IdGenerator` inyectados. Igualdad con `Equatable`.
 - Textos con slang, en español e inglés, inyectados por el consumidor (`core_ui`). Nada de textos escritos a mano en la UI.
-- Cifras de la hora con cifras tabulares (`FontFeature.tabularFigures()`), Inter como asset de `design_system`.
+- Colores, medidas y textos siempre desde `design_system` (`AppThemeColors.of(context)`, `AppTypography`, `AppSpacing`…), nunca valores a mano. Los tokens de `packages/design_system/lib/src/tokens/` se generan desde `design/referencia_penpot/` con `dart run tool/generate_tokens.dart` y no se editan a mano.
+- Variantes de Penpot con `AppTone` (`surface`, `photo`, `night`) y `AppUrgency`; el modo noche del reloj usa `AppTheme.night`.
+- Cifras de la hora con cifras tabulares (ya incluidas en todos los estilos de `AppTypography`), Inter como asset de `design_system`.
 - Una rama (y un PR) por proyecto; toda rama que cambia un paquete o la app sube su versión, añade su entrada al CHANGELOG y actualiza su README (formato y SemVer de la skill). La app sube además el `+build`.
 
 ## Trampas conocidas en tests (heredadas de home_tasks)
