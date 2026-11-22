@@ -15,6 +15,7 @@ export 'src/components/app_icon_button.dart';
 export 'src/components/app_mode_dots.dart';
 export 'src/components/app_photo_scrim.dart';
 export 'src/components/app_pressable.dart';
+export 'src/components/app_quick_ripple.dart';
 export 'src/components/app_saved_chip.dart';
 export 'src/components/app_settings_row.dart';
 export 'src/components/app_sound_tile.dart';

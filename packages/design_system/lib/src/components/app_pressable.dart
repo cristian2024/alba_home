@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../tokens/app_opacity.dart';
 import '../tokens/app_sizes.dart';
 import '../tokens/app_theme_colors.dart';
+import 'app_quick_ripple.dart';
 
 /// Superficie pulsable plana: cambia a [pressedColor] mientras se pulsa,
 /// muestra el anillo de foco de 3 px con teclado o Switch Access y se anuncia
@@ -92,7 +93,7 @@ class _AppPressableState extends State<AppPressable> {
                 splashColor: splash,
                 highlightColor: Colors.transparent,
                 hoverColor: Colors.transparent,
-                splashFactory: InkRipple.splashFactory,
+                splashFactory: AppQuickRipple.splashFactory,
                 customBorder: RoundedRectangleBorder(borderRadius: widget.borderRadius),
                 child: widget.child,
               ),

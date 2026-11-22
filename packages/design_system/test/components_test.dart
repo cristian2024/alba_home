@@ -133,6 +133,26 @@ void main() {
       expect(taps, 2);
     });
 
+    testWidgets('la onda es corta: a los 300 ms ya no queda nada pintado', (WidgetTester tester) async {
+      await pumpOnDevice(tester, AppButton(label: 'Posponer', onPressed: () {}));
+      final Finder button = find.byType(AppButton);
+
+      await tester.tap(button);
+      await tester.pump(const Duration(milliseconds: 20));
+      final RenderObject material = tester.renderObject(find.descendant(of: button, matching: find.byType(Material)).first);
+      expect(material, paints..circle());
+
+      await tester.pump(const Duration(milliseconds: 300));
+      expect(material, isNot(paints..circle()));
+    });
+
+    test('AppQuickRipple tarda en total menos de 300 ms', () {
+      final Duration total = AppQuickRipple.radiusDuration + AppQuickRipple.fadeOutDuration;
+
+      expect(total, lessThan(const Duration(milliseconds: 300)));
+      expect(AppButtonColors.splashOpacity, lessThanOrEqualTo(0.12));
+    });
+
     testWidgets('un botón desactivado no hace onda', (WidgetTester tester) async {
       await pumpOnDevice(tester, const AppButton(label: 'Posponer', onPressed: null));
 

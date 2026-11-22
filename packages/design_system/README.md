@@ -25,7 +25,7 @@ Esos archivos no se editan a mano. Un test falla si no coinciden con el JSON, as
 
 `AppTheme.light` y `AppTheme.dark` siguen el tema del sistema. `AppTheme.night` es el modo noche del reloj: fondo negro y texto ámbar.
 
-El sistema es plano: no tiene sombras ni tinte de superficie. Al pulsar, el fondo baja un paso; los botones (`AppButton`, `AppIconButton`) hacen además una onda del color de su texto (`AppPressable.splashColor`), y el resto de lo pulsable no.
+El sistema es plano: no tiene sombras ni tinte de superficie. Al pulsar, el fondo baja un paso; los botones (`AppButton`, `AppIconButton`) hacen además una onda corta y tenue del color de su texto (`AppPressable.splashColor`, `AppQuickRipple`), y el resto de lo pulsable no.
 
 Los componentes con variantes de Penpot reciben `AppTone`:
 - `surface`: sobre el lienzo.
@@ -64,7 +64,7 @@ Los estados y avisos reciben además `AppUrgency`: `normal`, `warning` (ocre) o 
 - **La hora:** usa cifras tabulares, no una caja fija por dígito, como pide `DESIGN.md`. El espacio alrededor de los dos puntos es algo más estrecho.
 - **Botón que ocupa el hueco** (`expand`): baja el relleno lateral a 16. Así cabe «1 min» en la tarjeta de temporizador, donde las cifras tabulares lo hacen más ancho que en Penpot.
 - **Pulsado de `nightPrimary`:** baja a `night.text-secondary`, porque Penpot no define ese estado.
-- **Onda en los botones:** `DESIGN.md` describe el pulsado solo como un cambio de fondo; la onda se añadió a petición, con el color del texto al 24 %.
+- **Onda en los botones:** `DESIGN.md` describe el pulsado solo como un cambio de fondo; la onda se añadió a petición, con el color del texto al 10 %, corta (`AppQuickRipple`: unos 250 ms).
 
 ## Licencias
 

@@ -162,7 +162,7 @@ class AppButtonColors {
   /// Onda al pulsar: el color del texto, translúcido.
   Color get splash => foreground.withValues(alpha: splashOpacity);
 
-  /// Opacidad de la onda. Penpot no la define: está elegida para que se vea
-  /// sobre el ámbar y sobre el negro de noche sin tapar la etiqueta.
-  static const double splashOpacity = 0.24;
+  /// Opacidad de la onda. Penpot no la define: apenas visible, para que el
+  /// cambio de fondo siga siendo la señal principal.
+  static const double splashOpacity = 0.1;
 }

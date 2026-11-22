@@ -8,5 +8,5 @@
 - `AppTheme.light`, `AppTheme.dark` y `AppTheme.night`, planos y sin sombras. `AppTone` y `AppUrgency` para elegir variantes.
 - Componentes: `AppButton`, `AppIconButton`, `AppPressable`, `AppIcon`, `AppClockTime`, `AppStatusBlock`, `AppStatusCapsule`, `AppModeDots`, `AppAlertBanner`, `AppFullScreenAlert`, `AppTimerCard`, `AppSavedChip`, `AppAlarmRow`, `AppSwitch`, `AppDayToggle`, `AppSettingsRow`, `AppSettingsField`, `AppStepper`, `AppWheelPicker`, `AppSoundTile`, `AppEmptyState` y `AppPhotoScrim`.
 - `registerDesignSystemLicenses()` con las licencias de Inter y Lucide.
-- Los botones hacen una onda al pulsar (`AppPressable.splashColor`).
+- Los botones hacen una onda corta y tenue al pulsar (`AppPressable.splashColor`, `AppQuickRipple`).
 - Galería en `example/` para comparar con las hojas de Penpot, con desplazamiento horizontal en las filas anchas.
