@@ -10,7 +10,7 @@ environment:
 resolution: workspace
 
 dependencies:
-  design_system: ^0.1.0
+  design_system: ^0.1.1
   flutter:
     sdk: flutter
 
