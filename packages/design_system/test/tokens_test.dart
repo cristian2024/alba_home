@@ -58,6 +58,23 @@ void main() {
     expect(AppIcons.batteryLow.toString(), 'AppIconData(battery-low)');
   });
 
+  test('cada icono tiene su código en AlbaIcons y se recupera por él', () {
+    for (int index = 0; index < AppIcons.all.length; index++) {
+      final AppIconData icon = AppIcons.all[index];
+      expect(icon.codepoint, 0xE000 + index, reason: icon.name);
+      expect(AppIcons.byCodepoint(icon.iconData.codePoint), same(icon));
+    }
+    expect(AppIcons.alarm.iconData.fontFamily, 'AlbaIcons');
+    expect(AppIcons.alarm.iconData.fontPackage, 'design_system');
+    expect(AppIcons.byCodepoint(0xDFFF), isNull);
+    expect(AppIcons.byCodepoint(0xE000 + AppIcons.all.length), isNull);
+  });
+
+  test('la fuente AlbaIcons existe y está declarada', () {
+    expect(File('assets/fonts/AlbaIcons.ttf').lengthSync(), greaterThan(10000));
+    expect(File('pubspec.yaml').readAsStringSync(), contains('assets/fonts/AlbaIcons.ttf'));
+  });
+
   group('SvgPathParser', () {
     test('admite M, L, H, V, Q y Z con varias coordenadas seguidas', () {
       final Path path = SvgPathParser.parse('M0 0L10 0H20V10Q20 20 10 20L0 20 0 10Z');

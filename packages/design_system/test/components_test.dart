@@ -777,6 +777,14 @@ void main() {
       expect(find.descendant(of: find.byType(AppPhotoScrim), matching: find.byType(IgnorePointer)), findsOneWidget);
     });
 
+    testWidgets('el glifo de AlbaIcons se dibuja como un icono de Flutter', (WidgetTester tester) async {
+      await pumpOnDevice(tester, Icon(AppIcons.alarm.iconData, size: 48));
+
+      expect(tester.getSize(find.byType(Icon)), const Size(48, 48));
+      expect(tester.widget<RichText>(find.descendant(of: find.byType(Icon), matching: find.byType(RichText))).text.toPlainText(),
+          String.fromCharCode(AppIcons.alarm.codepoint));
+    });
+
     testWidgets('AppIcon es decorativo sin etiqueta y una imagen con ella', (WidgetTester tester) async {
       final SemanticsHandle semantics = tester.ensureSemantics();
       await pumpOnDevice(
