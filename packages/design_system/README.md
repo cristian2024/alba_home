@@ -32,6 +32,8 @@ Los componentes con variantes de Penpot reciben `AppTone`:
 - `photo`: sobre la foto, con su degradado.
 - `night`: modo noche.
 
+`AppToneScope` lo pone la app sobre las pantallas durante el horario de noche, para que las que tienen variante de noche la elijan solas.
+
 Los estados y avisos reciben además `AppUrgency`: `normal`, `warning` (ocre) o `urgent` (terracota, o rojo de noche).
 
 ## Componentes
@@ -49,7 +51,7 @@ Los estados y avisos reciben además `AppUrgency`: `normal`, `warning` (ocre) o 
 | `AppFullScreenAlert` | `Alert/FullScreen/*` | Aviso que sustituye la pantalla, con una o dos `AppAlertAction`. |
 | `AppTimerCard` | `Timer/Card/*` | Temporizador de 264 × 268: en marcha, en pausa, terminado o detenido con «Deshacer». |
 | `AppSavedChip` | `Saved/Chip/*` | Tiempo guardado de cocina, píldora de 72. |
-| `AppAlarmRow` | `Alarm/Row/*` | Fila de 96 con hora, nombre, días e interruptor. La fila y el interruptor son controles separados para TalkBack. |
+| `AppAlarmRow` | `Alarm/Row/*` | Fila de 96 con hora, nombre, días e interruptor. La fila y el interruptor son controles separados para TalkBack. Con `blocked`, detalle en rojo y escudo (03.7). |
 | `AppSwitch` | `Settings/Switch/*` | Interruptor de 72 × 48. |
 | `AppDayToggle` | `Day/Toggle/*` | Día de la semana, círculo de 64. |
 | `AppSettingsRow`, `AppSettingsField` | `Settings/Row/*` | Fila de 80 con *chevron*, valor o interruptor; `attention` en ocre; campo de 72. |

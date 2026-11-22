@@ -7,6 +7,7 @@
 - Tokens generados desde Penpot con `tool/generate_tokens.dart`: `AppColors`, `AppThemeColors` (claro y oscuro), `AppNightColors`, `AppSpacing`, `AppRadii`, `AppSizes`, `AppLayout`, `AppOpacity`, `AppTypography` (Inter con cifras tabulares) y los 58 `AppIcons`.
 - `AppTheme.light`, `AppTheme.dark` y `AppTheme.night`, planos y sin sombras. `AppTone` y `AppUrgency` para elegir variantes.
 - Componentes: `AppButton`, `AppIconButton`, `AppPressable`, `AppIcon`, `AppClockTime`, `AppStatusBlock`, `AppStatusCapsule`, `AppModeDots`, `AppAlertBanner`, `AppFullScreenAlert`, `AppTimerCard`, `AppSavedChip`, `AppAlarmRow`, `AppSwitch`, `AppDayToggle`, `AppSettingsRow`, `AppSettingsField`, `AppStepper`, `AppWheelPicker`, `AppSoundTile`, `AppEmptyState` y `AppPhotoScrim`.
+- `AppToneScope` y `AppAlarmRow.blocked`.
 - `registerDesignSystemLicenses()` con las licencias de Inter y Lucide.
 - Los botones hacen una onda corta y tenue al pulsar (`AppPressable.splashColor`, `AppQuickRipple`).
 - Galería en `example/` para comparar con las hojas de Penpot, con desplazamiento horizontal en las filas anchas.
