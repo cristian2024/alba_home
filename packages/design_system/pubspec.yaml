@@ -23,6 +23,9 @@ flutter:
     - assets/OFL-Inter.txt
     - assets/LICENSE-Lucide.txt
   fonts:
+    - family: AlbaIcons
+      fonts:
+        - asset: assets/fonts/AlbaIcons.ttf
     - family: Inter
       fonts:
         - asset: assets/fonts/Inter-Regular.ttf

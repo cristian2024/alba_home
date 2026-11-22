@@ -14,5 +14,8 @@ Future<void> testExecutable(FutureOr<void> Function() testMain) async {
     inter.addFont(Future<ByteData>.value(ByteData.view(bytes.buffer)));
   }
   await inter.load();
+  final FontLoader icons = FontLoader('packages/design_system/AlbaIcons')
+    ..addFont(Future<ByteData>.value(ByteData.view(File('assets/fonts/AlbaIcons.ttf').readAsBytesSync().buffer)));
+  await icons.load();
   await testMain();
 }

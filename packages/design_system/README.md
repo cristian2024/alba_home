@@ -19,7 +19,7 @@ Esos archivos no se editan a mano. Un test falla si no coinciden con el JSON, as
 - `AppNightColors`: ámbar sobre negro, iguales en los dos temas.
 - `AppSpacing`, `AppRadii` (`2xLarge` → `x2xLarge`), `AppSizes`, `AppLayout` (lienzo de 891 × 411) y `AppOpacity`.
 - `AppTypography`: los 13 estilos de Penpot (`clockHero` de 205 a `caption` de 14), con Inter del paquete y cifras tabulares en todos. Un `TextStyle` propio debe indicar `package: AppTypography.fontPackage`.
-- `AppIcons`: los 58 iconos de Penpot (Lucide con el trazo convertido en relleno), dibujados con `AppIcon`.
+- `AppIcons`: los 58 iconos de Penpot (Lucide con el trazo convertido en relleno), dibujados con `AppIcon`. Cada uno lleva además su glifo en la fuente `AlbaIcons` (`iconData`) para los contratos que piden un `IconData` (`HomePlugin.icon`, cápsulas y avisos); `AppIcons.byCodepoint` vuelve del glifo al icono. La fuente la genera `python3 tool/generate_icon_font.py` (con fontTools) desde los mismos trazados.
 
 ## Temas
 
