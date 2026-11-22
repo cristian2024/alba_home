@@ -146,6 +146,19 @@ void main() {
       expect(material, isNot(paints..circle()));
     });
 
+    testWidgets('la onda se recorta a la forma del botón, también en los redondos', (WidgetTester tester) async {
+      await pumpOnDevice(
+        tester,
+        AppIconButton(icon: AppIcons.pause, semanticLabel: 'Pausar', onPressed: () {}),
+      );
+      final Finder button = find.byType(AppIconButton);
+
+      await tester.startGesture(tester.getCenter(button));
+      await tester.pump(const Duration(milliseconds: 60));
+      final RenderObject material = tester.renderObject(find.descendant(of: button, matching: find.byType(Material)).first);
+      expect(material, paints..clipPath()..circle());
+    });
+
     test('AppQuickRipple tarda en total menos de 300 ms', () {
       final Duration total = AppQuickRipple.radiusDuration + AppQuickRipple.fadeOutDuration;
 

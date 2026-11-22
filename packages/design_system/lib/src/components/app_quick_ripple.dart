@@ -14,8 +14,12 @@ class AppQuickRipple extends InteractiveInkFeature {
     required TextDirection textDirection,
     super.customBorder,
     BorderRadius? borderRadius,
+    RectCallback? rectCallback,
     super.onRemoved,
   })  : _position = position,
+        // Sin rectángulo de recorte, paintInkCircle no aplica la forma del
+        // botón y la onda llena su caja: un cuadrado en un botón redondo.
+        _clipCallback = rectCallback ?? (() => Offset.zero & referenceBox.size),
         _borderRadius = borderRadius ?? BorderRadius.zero,
         _textDirection = textDirection,
         _targetRadius = _farthestCorner(referenceBox.size, position) {
@@ -39,6 +43,7 @@ class AppQuickRipple extends InteractiveInkFeature {
   static const InteractiveInkFeatureFactory splashFactory = _AppQuickRippleFactory();
 
   final Offset _position;
+  final RectCallback _clipCallback;
   final BorderRadius _borderRadius;
   final TextDirection _textDirection;
   final double _targetRadius;
@@ -97,6 +102,7 @@ class AppQuickRipple extends InteractiveInkFeature {
       radius: radius,
       customBorder: customBorder,
       borderRadius: _borderRadius,
+      clipCallback: _clipCallback,
     );
   }
 }
@@ -126,6 +132,7 @@ class _AppQuickRippleFactory extends InteractiveInkFeatureFactory {
         textDirection: textDirection,
         customBorder: customBorder,
         borderRadius: borderRadius,
+        rectCallback: rectCallback,
         onRemoved: onRemoved,
       );
 }
