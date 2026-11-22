@@ -519,6 +519,63 @@ void main() {
       expect(tester.widget<Text>(find.text('09:00')).style!.color, AppThemeColors.light.textTertiary);
     });
 
+    testWidgets('AppAlarmRow bloqueada: detalle en rojo y escudo en lugar del interruptor', (WidgetTester tester) async {
+      await pumpOnDevice(
+        tester,
+        SizedBox(
+          width: 827,
+          child: AppAlarmRow(
+            time: '06:30',
+            label: 'Trabajo',
+            detail: 'Lun a vie · bloqueada por Android',
+            enabled: true,
+            blocked: true,
+            onTap: () {},
+            onEnabledChanged: (bool value) {},
+          ),
+        ),
+      );
+
+      expect(find.byType(AppSwitch), findsNothing);
+      expect(tester.widget<AppIcon>(find.byType(AppIcon)).icon, AppIcons.shieldAlert);
+      expect(tester.widget<Text>(find.text('Lun a vie · bloqueada por Android')).style!.color, AppThemeColors.light.textDanger);
+    });
+
+    testWidgets('AppToneScope da el tono a lo de debajo; sin él, superficie', (WidgetTester tester) async {
+      late AppTone inside;
+      late AppTone outside;
+      await pumpOnDevice(
+        tester,
+        Column(
+          children: <Widget>[
+            Builder(
+              builder: (BuildContext context) {
+                outside = AppToneScope.of(context);
+                return const SizedBox();
+              },
+            ),
+            AppToneScope(
+              tone: AppTone.night,
+              child: Builder(
+                builder: (BuildContext context) {
+                  inside = AppToneScope.of(context);
+                  return const SizedBox();
+                },
+              ),
+            ),
+          ],
+        ),
+      );
+
+      expect(outside, AppTone.surface);
+      expect(inside, AppTone.night);
+      expect(
+        const AppToneScope(tone: AppTone.night, child: SizedBox())
+            .updateShouldNotify(const AppToneScope(tone: AppTone.surface, child: SizedBox())),
+        isTrue,
+      );
+    });
+
     testWidgets('AppSoundTile en superficie y de noche, seleccionado o no', (WidgetTester tester) async {
       int taps = 0;
       await pumpOnDevice(

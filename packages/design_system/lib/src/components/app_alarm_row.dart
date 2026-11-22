@@ -1,10 +1,13 @@
 import 'package:flutter/widgets.dart';
 
+import '../tokens/app_icons.dart';
 import '../tokens/app_radii.dart';
+import '../tokens/app_sizes.dart';
 import '../tokens/app_spacing.dart';
 import '../tokens/app_theme_colors.dart';
 import '../tokens/app_typography.dart';
 import 'app_clock_time.dart';
+import 'app_icon.dart';
 import 'app_pressable.dart';
 import 'app_switch.dart';
 
@@ -21,6 +24,7 @@ class AppAlarmRow extends StatelessWidget {
     required this.onEnabledChanged,
     required this.onTap,
     this.semanticLabel,
+    this.blocked = false,
   });
 
   /// Hora ya formateada («06:30»).
@@ -33,6 +37,10 @@ class AppAlarmRow extends StatelessWidget {
   final ValueChanged<bool>? onEnabledChanged;
   final VoidCallback? onTap;
   final String? semanticLabel;
+
+  /// Android bloqueó las alarmas (03.7): el detalle va en rojo y un escudo
+  /// sustituye al interruptor, que no sirve de nada hasta dar el permiso.
+  final bool blocked;
 
   static const double height = 96;
 
@@ -78,7 +86,7 @@ class AppAlarmRow extends StatelessWidget {
                           detail,
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
-                          style: AppTypography.body.copyWith(color: theme.textSecondary),
+                          style: AppTypography.body.copyWith(color: blocked ? theme.textDanger : theme.textSecondary),
                         ),
                       ],
                     ),
@@ -93,7 +101,13 @@ class AppAlarmRow extends StatelessWidget {
         Positioned(
           right: AppSpacing.s600,
           top: (height - AppSwitch.height) / 2,
-          child: AppSwitch(value: enabled, onChanged: onEnabledChanged, semanticLabel: label),
+          child: blocked
+              ? SizedBox(
+                  width: AppSwitch.width,
+                  height: AppSwitch.height,
+                  child: Center(child: AppIcon(AppIcons.shieldAlert, size: AppSizes.iconLarge, color: theme.textDanger)),
+                )
+              : AppSwitch(value: enabled, onChanged: onEnabledChanged, semanticLabel: label),
         ),
       ],
     );
