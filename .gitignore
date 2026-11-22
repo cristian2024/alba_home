@@ -24,3 +24,9 @@ devtools_options.yaml
 *.dylib
 *.so
 isar.dll
+
+# Fuera del repo: modelos de la base 3D, archivos de Penpot y estado local de
+# Impeccable (en design/referencia_penpot/ están las exportaciones que usa el código).
+hardware/
+design/penpot/
+.impeccable/

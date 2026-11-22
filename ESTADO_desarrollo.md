@@ -4,7 +4,7 @@
 
 ## Fase actual
 
-**Fase 3 (base del monorepo): pasos 1 a 3 hechos.** `flutter_shared` publicado: PRs #1 a #6 mergeados y etiquetas `core_utils-v0.1.2`, `core_di-v0.1.2`, `core_events-v0.2.0`, `core_ui-v0.1.2`, `core_contracts-v0.1.4` y `storage_isar-v0.3.0`. Workspace de Alba (paso 2) y contratos nuevos (paso 3) en local, sin commits, con `melos run verify` en verde. Siguiente: paso 4, `design_system`.
+**Fase 3 (base del monorepo): pasos 1 a 3 hechos.** `flutter_shared` publicado: PRs #1 a #6 mergeados y etiquetas `core_utils-v0.1.2`, `core_di-v0.1.2`, `core_events-v0.2.0`, `core_ui-v0.1.2`, `core_contracts-v0.1.4` y `storage_isar-v0.3.0`. Workspace de Alba (paso 2) y contratos nuevos (paso 3) subidos a `alba_home`: raíz directa en `main` y PRs #1 app, #2 core_audio, #3 core_alarm_scheduler, #4 core_battery y #5 core_display, independientes entre sí y con `verify` en verde cada uno. Siguiente: paso 4, `design_system`.
 
 ### flutter_shared (paso 1)
 
@@ -35,6 +35,13 @@ Cuatro paquetes en `packages/core/` (añadido `packages/core/*` al workspace), D
 - `core_battery`: `BatteryReader` con `BatteryStatus` (nivel, `BatteryChargeState` con `notCharging`, temperatura en °C para 07.4) y `isPluggedIn` (07.1). Doble `InMemoryBatteryReader`.
 - `core_display`: `DisplayControl` (pantalla encendida, brillo 0–1 o el del sistema, inmersivo). Doble `InMemoryDisplayControl`.
 - Los dobles reenvían los cambios suscribiéndose al empezar a escuchar: con un generador `async*` se perdían los cambios que llegaban antes de pedir el siguiente evento (lo detectó el test de contrato).
+
+### Repo alba_home
+
+- `main` empieza con la raíz: tooling, CI, `CLAUDE.md`, `README.md`, `PLAN.md`, `PROMPT_desarrollo.md`, esta bitácora, `DESIGN.md` y `design/` sin `design/penpot/`. Fuera, sin seguimiento: `hardware/`, `design/penpot/` y `.impeccable/` (pendiente de decidir con el usuario).
+- `workspace:` es un solo patrón con alternativas, `"{apps/alba,packages/core/*}"`: con entradas separadas, cada rama fallaba por la carpeta que no trae.
+- `packages/core/README.md` va en la raíz para que la carpeta exista en todas las ramas: la herramienta de Flutter (no `dart pub`) falla si una carpeta del patrón no existe.
+- `local/integracion`: rama solo local que junta las cinco ramas, para trabajar con todo en disco. No se sube. Los cambios de esta bitácora posteriores a la raíz irán en una rama de la raíz.
 
 ## Hecho y verificado
 
