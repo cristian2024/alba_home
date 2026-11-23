@@ -1,0 +1,39 @@
+name: alarm_example
+description: App de ejemplo del plugin de alarma, con almacenamiento y alarmas en memoria y un botón para hacerla sonar.
+publish_to: none
+version: 0.1.0+1
+
+environment:
+  sdk: ^3.11.0
+  flutter: ">=3.27.0"
+
+resolution: workspace
+
+dependencies:
+  alarm_domain: ^0.1.0
+  core_alarm_scheduler: ^0.1.0
+  core_di:
+    git:
+      url: https://github.com/cristian2024/flutter_shared.git
+      path: packages/core/core_di
+      tag_pattern: core_di-v{{version}}
+    version: ^0.1.2
+  core_ui:
+    git:
+      url: https://github.com/cristian2024/flutter_shared.git
+      path: packages/shared/core_ui
+      tag_pattern: core_ui-v{{version}}
+    version: ^0.1.3
+  design_system: ^0.1.1
+  flutter:
+    sdk: flutter
+  go_router: ">=14.0.0 <17.0.0"
+  plugin_alarm: ^0.1.0
+
+dev_dependencies:
+  flutter_lints: ^6.0.0
+  flutter_test:
+    sdk: flutter
+
+flutter:
+  uses-material-design: true
