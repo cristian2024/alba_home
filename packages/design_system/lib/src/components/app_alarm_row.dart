@@ -47,6 +47,8 @@ class AppAlarmRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final AppThemeColors theme = AppThemeColors.of(context);
+    final Color dangerColor = theme.textDanger;
+    final Color secondaryColor = theme.textSecondary;
     final String rowLabel = semanticLabel ?? '$time, $label, $detail';
     return Stack(
       children: <Widget>[
@@ -79,14 +81,14 @@ class AppAlarmRow extends StatelessWidget {
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                           style: AppTypography.bodyLarge.copyWith(
-                            color: enabled ? theme.textPrimary : theme.textSecondary,
+                            color: enabled ? theme.textPrimary : secondaryColor,
                           ),
                         ),
                         Text(
                           detail,
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
-                          style: AppTypography.body.copyWith(color: blocked ? theme.textDanger : theme.textSecondary),
+                          style: AppTypography.body.copyWith(color: blocked ? dangerColor : secondaryColor),
                         ),
                       ],
                     ),
@@ -105,7 +107,7 @@ class AppAlarmRow extends StatelessWidget {
               ? SizedBox(
                   width: AppSwitch.width,
                   height: AppSwitch.height,
-                  child: Center(child: AppIcon(AppIcons.shieldAlert, size: AppSizes.iconLarge, color: theme.textDanger)),
+                  child: Center(child: AppIcon(AppIcons.shieldAlert, size: AppSizes.iconLarge, color: dangerColor)),
                 )
               : AppSwitch(value: enabled, onChanged: onEnabledChanged, semanticLabel: label),
         ),

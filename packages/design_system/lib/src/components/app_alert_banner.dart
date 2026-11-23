@@ -57,40 +57,46 @@ class AppAlertBanner extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final AppThemeColors theme = AppThemeColors.of(context);
+    final Color raisedColor = theme.bgSurfaceRaised;
+    final Color primaryColor = theme.textPrimary;
+    final Color warningColor = theme.textWarning;
+    final Color onPhotoBackground = theme.bgOnPhoto;
+    final Color onDangerColor = theme.textOnDanger;
+    final Color onPhotoColor = theme.textOnPhoto;
     final _BannerColors colors = switch (variant) {
       AppBannerVariant.info => _BannerColors(
-          background: theme.bgSurfaceRaised,
+          background: raisedColor,
           border: theme.borderDefault,
           iconBackground: theme.bgInfoSubtle,
           icon: theme.textInfo,
-          title: theme.textPrimary,
+          title: primaryColor,
           message: theme.textSecondary,
           button: AppButtonVariant.secondary,
         ),
       AppBannerVariant.warning => _BannerColors(
           background: theme.bgWarningSubtle,
           border: theme.borderWarning,
-          iconBackground: theme.bgSurfaceRaised,
-          icon: theme.textWarning,
-          title: theme.textWarning,
-          message: theme.textPrimary,
+          iconBackground: raisedColor,
+          icon: warningColor,
+          title: warningColor,
+          message: primaryColor,
           button: AppButtonVariant.secondary,
         ),
       AppBannerVariant.critical => _BannerColors(
           background: theme.actionDangerDefault,
-          iconBackground: theme.bgOnPhoto,
-          icon: theme.textOnDanger,
-          title: theme.textOnDanger,
-          message: theme.textOnDanger,
+          iconBackground: onPhotoBackground,
+          icon: onDangerColor,
+          title: onDangerColor,
+          message: onDangerColor,
           button: AppButtonVariant.secondary,
         ),
       AppBannerVariant.photo => _BannerColors(
           background: theme.photoScrimEnd,
           border: theme.borderOnPhoto,
-          iconBackground: theme.bgOnPhoto,
+          iconBackground: onPhotoBackground,
           icon: theme.statusWarning,
-          title: theme.textOnPhoto,
-          message: theme.textOnPhoto,
+          title: onPhotoColor,
+          message: onPhotoColor,
           button: AppButtonVariant.primary,
         ),
       AppBannerVariant.night => const _BannerColors(

@@ -12,6 +12,7 @@ class AppPhotoScrim extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final AppThemeColors theme = AppThemeColors.of(context);
+    final Color scrimEnd = theme.photoScrimEnd;
     return Align(
       alignment: Alignment.bottomCenter,
       child: IgnorePointer(
@@ -23,7 +24,7 @@ class AppPhotoScrim extends StatelessWidget {
               gradient: LinearGradient(
                 begin: Alignment.bottomCenter,
                 end: Alignment.topCenter,
-                colors: <Color>[theme.photoScrimEnd, theme.photoScrimEnd, theme.photoScrimStart],
+                colors: <Color>[scrimEnd, scrimEnd, theme.photoScrimStart],
                 stops: const <double>[0, AppLayout.scrimSolidFrom, 1],
               ),
             ),

@@ -98,6 +98,8 @@ class AppTimerCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final AppThemeColors theme = AppThemeColors.of(context);
+    final Color brandColor = theme.textBrand;
+    final Color secondaryColor = theme.textSecondary;
     final bool finished = status == AppTimerStatus.finished;
     final bool stopped = status == AppTimerStatus.stopped;
     final bool dimmed = status == AppTimerStatus.paused || stopped;
@@ -131,7 +133,7 @@ class AppTimerCard extends StatelessWidget {
                   Text(
                     statusLabel,
                     maxLines: 1,
-                    style: AppTypography.labelLarge.copyWith(color: finished ? theme.textBrand : theme.textSecondary),
+                    style: AppTypography.labelLarge.copyWith(color: finished ? brandColor : secondaryColor),
                   ),
                   const SizedBox(height: 8),
                   SizedBox(
@@ -140,7 +142,7 @@ class AppTimerCard extends StatelessWidget {
                       remaining,
                       size: AppClockSize.small,
                       dimmed: dimmed,
-                      color: finished ? theme.textBrand : null,
+                      color: finished ? brandColor : null,
                       semanticLabel: remainingSemantic,
                     ),
                   ),
@@ -204,7 +206,7 @@ class AppTimerCard extends StatelessWidget {
               Positioned(
                 right: AppSpacing.s500,
                 bottom: 44,
-                child: Text(countdown, style: AppTypography.labelLarge.copyWith(color: theme.textSecondary)),
+                child: Text(countdown, style: AppTypography.labelLarge.copyWith(color: secondaryColor)),
               ),
           ],
         ),
