@@ -164,7 +164,7 @@ packages:
     source: hosted
     version: "3.0.8"
   equatable:
-    dependency: transitive
+    dependency: "direct overridden"
     description:
       name: equatable
       sha256: ea36e500cbf0ec18361deabca755434f73e42fe53c5130021c7e2d6b5ebe1702

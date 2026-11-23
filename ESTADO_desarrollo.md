@@ -4,7 +4,7 @@
 
 ## Fase actual
 
-**Fase 3 (base del monorepo): pasos 1 a 4 hechos; falta la puerta (visto bueno).** `flutter_shared` publicado: PRs #1 a #6 mergeados y etiquetas `core_utils-v0.1.2`, `core_di-v0.1.2`, `core_events-v0.2.0`, `core_ui-v0.1.2`, `core_contracts-v0.1.4` y `storage_isar-v0.3.0`. Workspace de Alba (paso 2) y contratos nuevos (paso 3) en `alba_home`: raíz directa en `main` y PRs #1 app, #2 core_audio, #3 core_alarm_scheduler, #4 core_battery y #5 core_display mergeados el 2026-11-22. `design_system` (paso 4) con su galería, y `melos run verify` en verde con todo. Siguiente: visto bueno de la fase 3 y fase 4 (alarma).
+**Fase 3 cerrada (visto bueno el 2026-11-22). Fase 4 empezada: alarma.** `flutter_shared` publicado: PRs #1 a #6 mergeados y etiquetas `core_utils-v0.1.2`, `core_di-v0.1.2`, `core_events-v0.2.0`, `core_ui-v0.1.2`, `core_contracts-v0.1.4` y `storage_isar-v0.3.0`. Workspace de Alba (paso 2) y contratos nuevos (paso 3) en `alba_home`: raíz directa en `main` y PRs #1 app, #2 core_audio, #3 core_alarm_scheduler, #4 core_battery y #5 core_display mergeados el 2026-11-22. `design_system` (paso 4) con su galería, y `melos run verify` en verde con todo. Siguiente: visto bueno de la fase 3 y fase 4 (alarma).
 
 ### flutter_shared (paso 1)
 
@@ -35,6 +35,22 @@ Cuatro paquetes en `packages/core/` (añadido `packages/core/*` al workspace), D
 - `core_battery`: `BatteryReader` con `BatteryStatus` (nivel, `BatteryChargeState` con `notCharging`, temperatura en °C para 07.4) y `isPluggedIn` (07.1). Doble `InMemoryBatteryReader`.
 - `core_display`: `DisplayControl` (pantalla encendida, brillo 0–1 o el del sistema, inmersivo). Doble `InMemoryDisplayControl`.
 - Los dobles reenvían los cambios suscribiéndose al empezar a escuchar: con un generador `async*` se perdían los cambios que llegaban antes de pedir el siguiente evento (lo detectó el test de contrato).
+
+### Fase 4 · alarma (en curso, en local)
+
+- `alarm_domain` 0.1.0 (Dart puro, 32 tests, 100 % de cobertura): `Alarm` con `AlarmTime` local y días `Weekday`; `NextRing` calcula la próxima vez (sin días: hoy o mañana; con días: el primero que toque) con `WallClock` inyectado (`FixedOffsetWallClock` para Colombia y los tests, `SystemWallClock` en la app); `AlarmSession` para sonar y posponer con límite («quedan 2», «1 de 3 veces»); `afterDismiss` desactiva las de una sola vez. `AlarmRepository` con tests de contrato y doble en memoria.
+- `alarm_contract` 0.1.0 (proyecto aparte): `NextAlarmQuery` (próxima alarma y si Android deja sonar) con tests de contrato y doble, y eventos `AlarmRang`, `AlarmSnoozed`, `AlarmDismissed`.
+- Workspace: el patrón añade `packages/plugins/*/*` y `packages/contracts/*`.
+- `storage_isar` 0.3.0 no resolvía por git desde fuera (declaraba `core_contracts` y `core_di` solo con versión). Arreglo 0.3.1 en `flutter_shared` (PR #7) y regla en su CLAUDE.md (PR #8), pendientes de merge y de la etiqueta `storage_isar-v0.3.1`. Mientras, `pubspec_overrides.yaml` local (ignorado) apunta a la rama del arreglo.
+- `alarm_isar` 0.1.0: `IsarAlarm` e `IsarAlarmSession` (fila única), `IsarAlarmRepository` en transacciones, `AlarmIsar` como `IsarFeature`. Pasa los tests de contrato con Isar real.
+- `alarm_scheduler_alarm` 0.1.0 (adaptador de `core_alarm_scheduler` sobre `alarm` 5.15.0 y `permission_handler` 13.0.2): id de texto en el `payload` e id entero por FNV-1a; varias a la vez y en el mismo segundo; subida con `VolumeSettings.fade` y volumen forzado; orden de inicio seguido desde que se crea. `alarm` y los permisos van detrás de interfaces: pasa el contrato completo con un `alarm` simulado (20 tests). Pantalla completa (Android 14+) se da por concedida.
+- **Decisión (usuario, 2026-11-22):** `alarm` exige `equatable ^2` en todas sus versiones; se fuerza `equatable ^3` con `dependency_overrides` en el pubspec raíz (compila: solo usa `extends Equatable` y `props`). Revisar en cada actualización de `alarm`.
+- El patrón del workspace añade `packages/adapters/*`.
+- `design_system` 0.1.1 (PR #9, mergeado): `AppToneScope`, `AppAlarmRow.blocked` y fuente `AlbaIcons` (IconData por icono, generada con `tool/generate_icon_font.py`). En la revisión, los colores del tema repetidos en un `build` pasan a variables (fila de alarma y cinco componentes más).
+- `plugin_alarm` en local: casos de uso al 100 %, sonidos generados (`tool/generate_sounds.py`), slang es/en (sin fecha en la cabecera), pantallas 03.1–03.8, diálogos de nombre/sonido/posponer (sin diseño en Penpot), `AlarmPlugin` con cápsulas, avisos y `NextAlarmQuery`, y `example/` en memoria. 60 tests en verde. Arreglos que salieron de los tests: «mantener para apagar» soltado antes de tiempo posponía la alarma; la primera emisión de cápsulas salía vacía; cabecera 12 px más alta que en Penpot; diálogo de posposición desbordaba.
+- **Resuelto en `flutter_shared` (2026-11-23):** `core_ui` y `storage_isar` no compilaban por git porque su código generado (`*.g.dart`) no se versionaba. PRs #9 (core_ui 0.1.3, slang sin fecha), #10 (storage_isar 0.3.2) y #11 (regla en su CLAUDE.md) mergeados; etiquetas `core_ui-v0.1.3` y `storage_isar-v0.3.2` publicadas. PR #12: paso de la CI que regenera y falla si algún `*.g.dart` cambia. Alba ya no usa `pubspec_overrides.yaml`: `core_ui ^0.1.3` y `storage_isar ^0.3.2` por git, verify en verde.
+- Siguiente: abrir los PRs de la alarma (contrato, adaptador, funcionalidad y raíz); comparar con Impeccable a 891 × 411 y probar en el Mate 20 Lite.
+- Sin teléfono conectado por `adb` todavía.
 
 ### design_system (paso 4)
 
