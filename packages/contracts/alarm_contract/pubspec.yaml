@@ -1,0 +1,25 @@
+name: alarm_contract
+description: API pública de la alarma para otros plugins, en Dart puro. La próxima alarma (NextAlarmQuery) y los eventos sonó, pospuesta y apagada.
+version: 0.1.0
+publish_to: none
+
+environment:
+  sdk: ^3.11.0
+
+resolution: workspace
+
+dependencies:
+  # Solo para los tests de contrato (StreamQueue).
+  async: ^2.11.0
+  core_events:
+    git:
+      url: https://github.com/cristian2024/flutter_shared.git
+      path: packages/core/core_events
+      tag_pattern: core_events-v{{version}}
+    version: ^0.2.0
+  equatable: ^3.0.0
+  # Solo para los tests de contrato de `package:alarm_contract/testing.dart`.
+  test: ^1.28.0
+
+dev_dependencies:
+  flutter_lints: ^6.0.0

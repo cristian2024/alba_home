@@ -138,6 +138,15 @@ packages:
       url: "https://github.com/cristian2024/flutter_shared.git"
     source: git
     version: "0.1.2"
+  core_events:
+    dependency: transitive
+    description:
+      path: "packages/core/core_events"
+      resolved-ref: "36eb919c34b7189f63b0d13413721841228ff787"
+      tag-pattern: "core_events-v{{version}}"
+      url: "https://github.com/cristian2024/flutter_shared.git"
+    source: git
+    version: "0.2.0"
   core_utils:
     dependency: transitive
     description:
