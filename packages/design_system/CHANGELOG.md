@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.1.1 - 2026-11-22
+
+### Añadido
+
+- `AppToneScope`: la app indica el tono (p. ej. noche) a las pantallas de debajo.
+- `AppAlarmRow.blocked`: alarma bloqueada por Android, con el detalle en rojo y un escudo en lugar del interruptor (03.7).
+- Fuente `AlbaIcons`, generada desde los trazados de Penpot con `tool/generate_icon_font.py`: cada `AppIconData` lleva su `iconData` para los contratos que piden un `IconData`, y `AppIcons.byCodepoint` vuelve del glifo al icono.
+
 ## 0.1.0 - 2026-11-22
 
 ### Añadido

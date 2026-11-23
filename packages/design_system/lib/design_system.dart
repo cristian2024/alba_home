@@ -29,6 +29,7 @@ export 'src/components/app_wheel_picker.dart';
 export 'src/design_system_licenses.dart';
 export 'src/theme/app_theme.dart';
 export 'src/theme/app_tone.dart';
+export 'src/theme/app_tone_scope.dart';
 export 'src/tokens/app_colors.dart';
 export 'src/tokens/app_icon_data.dart';
 export 'src/tokens/app_icons.dart';

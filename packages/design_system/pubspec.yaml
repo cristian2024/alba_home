@@ -1,6 +1,6 @@
 name: design_system
 description: Sistema de diseño de Alba generado desde Penpot. Tokens, temas claro, oscuro y noche, Inter con cifras tabulares, iconos y componentes accesibles.
-version: 0.1.0
+version: 0.1.1
 publish_to: none
 
 environment:
@@ -23,6 +23,9 @@ flutter:
     - assets/OFL-Inter.txt
     - assets/LICENSE-Lucide.txt
   fonts:
+    - family: AlbaIcons
+      fonts:
+        - asset: assets/fonts/AlbaIcons.ttf
     - family: Inter
       fonts:
         - asset: assets/fonts/Inter-Regular.ttf

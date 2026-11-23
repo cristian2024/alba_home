@@ -209,29 +209,49 @@ String _typography(List<Map<String, Object?>> styles, Map<String, Object?> fonts
   return out.toString();
 }
 
+/// Primer código de la fuente `AlbaIcons` (`tool/generate_icon_font.py`):
+/// cada icono va en este más su posición en `spec.json`.
+const int firstIconCodepoint = 0xE000;
+
 String _icons(List<Map<String, Object?>> icons) {
   final StringBuffer out = StringBuffer()
     ..writeln(_header)
+    ..writeln("import 'package:flutter/widgets.dart';")
+    ..writeln()
     ..writeln("import 'app_icon_data.dart';")
     ..writeln()
     ..writeln('/// Iconos de Penpot (Lucide con el trazo ya convertido en relleno), en una')
-    ..writeln('/// caja de 24. Se dibujan con `AppIcon`.')
+    ..writeln('/// caja de 24. Se dibujan con `AppIcon`; `iconData` da el glifo de la')
+    ..writeln('/// fuente `AlbaIcons` para quien necesite un `IconData`.')
     ..writeln('abstract final class AppIcons {');
-  for (final Map<String, Object?> icon in icons) {
+  for (int index = 0; index < icons.length; index++) {
+    final Map<String, Object?> icon = icons[index];
     final String name = icon['name']! as String;
+    final String codepoint = '0x${(firstIconCodepoint + index).toRadixString(16).toUpperCase()}';
     out
       ..writeln('  /// `$name`')
-      ..writeln("  static const AppIconData ${_camel(name)} = AppIconData('$name', '${icon['d']}');");
+      ..writeln('  static const AppIconData ${_camel(name)} = AppIconData(')
+      ..writeln("    '$name',")
+      ..writeln('    IconData($codepoint, fontFamily: AppIconData.fontFamily, fontPackage: AppIconData.fontPackage),')
+      ..writeln("    '${icon['d']}',")
+      ..writeln('  );');
   }
   out
     ..writeln()
-    ..writeln('  /// Todos, en el orden de Penpot.')
+    ..writeln('  /// Todos, en el orden de Penpot (el de sus códigos).')
     ..writeln('  static const List<AppIconData> all = <AppIconData>[');
   for (final Map<String, Object?> icon in icons) {
     out.writeln('    ${_camel(icon['name']! as String)},');
   }
   out
     ..writeln('  ];')
+    ..writeln()
+    ..writeln('  /// El icono de [codepoint] (p. ej. el `IconData` de una cápsula); `null` si')
+    ..writeln('  /// no es de `AlbaIcons`.')
+    ..writeln('  static AppIconData? byCodepoint(int codepoint) {')
+    ..writeln('    final int index = codepoint - $firstIconCodepoint;')
+    ..writeln('    return index >= 0 && index < all.length ? all[index] : null;')
+    ..writeln('  }')
     ..writeln('}');
   return out.toString();
 }

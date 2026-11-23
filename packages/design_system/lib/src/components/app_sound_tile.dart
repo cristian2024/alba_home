@@ -39,6 +39,7 @@ class AppSoundTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final AppThemeColors theme = AppThemeColors.of(context);
+    final Color secondaryColor = theme.textSecondary;
     final bool night = tone == AppTone.night;
     final Color background = night ? AppNightColors.bg : (selected ? theme.bgBrandSubtle : theme.bgSurfaceRaised);
     final Color border = night
@@ -46,11 +47,11 @@ class AppSoundTile extends StatelessWidget {
         : (selected ? theme.borderBrand : theme.borderDefault);
     final Color iconColor = night
         ? (selected ? AppNightColors.textPrimary : AppNightColors.textSecondary)
-        : (selected ? theme.textBrand : theme.textSecondary);
+        : (selected ? theme.textBrand : secondaryColor);
     final Color nameColor = night ? (selected ? AppNightColors.textPrimary : AppNightColors.textSecondary) : theme.textPrimary;
     final Color detailColor = night
         ? AppNightColors.textSecondary
-        : (selected ? theme.textOnBrandSubtle : theme.textSecondary);
+        : (selected ? theme.textOnBrandSubtle : secondaryColor);
     return AppPressable(
       onTap: onTap,
       color: background,

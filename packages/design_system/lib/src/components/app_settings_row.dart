@@ -49,6 +49,11 @@ class AppSettingsRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final AppThemeColors theme = AppThemeColors.of(context);
+    final Color raisedColor = theme.bgSurfaceRaised;
+    final Color warningColor = theme.textWarning;
+    final Color primaryColor = theme.textPrimary;
+    final Color secondaryColor = theme.textSecondary;
+    final Color pressedBackground = theme.bgSurfacePressed;
     final String? sub = subtitle;
     final String? trailingValue = value;
     final bool? toggle = switchValue;
@@ -63,11 +68,11 @@ class AppSettingsRow extends StatelessWidget {
               width: AppSizes.controlMedium,
               height: AppSizes.controlMedium,
               decoration: BoxDecoration(
-                color: attention ? theme.bgSurfaceRaised : theme.bgSurfaceSunken,
+                color: attention ? raisedColor : theme.bgSurfaceSunken,
                 shape: BoxShape.circle,
               ),
               alignment: Alignment.center,
-              child: AppIcon(icon, color: attention ? theme.textWarning : theme.textPrimary),
+              child: AppIcon(icon, color: attention ? warningColor : primaryColor),
             ),
             Expanded(
               child: Column(
@@ -79,20 +84,20 @@ class AppSettingsRow extends StatelessWidget {
                     title,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
-                    style: AppTypography.bodyLarge.copyWith(color: theme.textPrimary),
+                    style: AppTypography.bodyLarge.copyWith(color: primaryColor),
                   ),
                   if (sub != null)
                     Text(
                       sub,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
-                      style: AppTypography.caption.copyWith(color: attention ? theme.textWarning : theme.textSecondary),
+                      style: AppTypography.caption.copyWith(color: attention ? warningColor : secondaryColor),
                     ),
                 ],
               ),
             ),
             if (trailingValue != null)
-              Text(trailingValue, maxLines: 1, style: AppTypography.body.copyWith(color: theme.textSecondary)),
+              Text(trailingValue, maxLines: 1, style: AppTypography.body.copyWith(color: secondaryColor)),
             if (toggle != null)
               ExcludeSemantics(child: AppSwitch(value: toggle, onChanged: onSwitchChanged, semanticLabel: title))
             else if (onTap != null)
@@ -101,7 +106,7 @@ class AppSettingsRow extends StatelessWidget {
         ),
       ),
     );
-    final Color background = attention ? theme.bgWarningSubtle : theme.bgSurfaceRaised;
+    final Color background = attention ? theme.bgWarningSubtle : raisedColor;
     final Color border = attention ? theme.borderWarning : theme.borderDefault;
     final BorderRadius radius = BorderRadius.circular(AppRadii.large);
     final String label = semanticLabel ?? <String?>[title, sub, trailingValue].whereType<String>().join(', ');
@@ -110,7 +115,7 @@ class AppSettingsRow extends StatelessWidget {
       return AppPressable(
         onTap: changed == null ? null : () => changed(!toggle),
         color: background,
-        pressedColor: theme.bgSurfacePressed,
+        pressedColor: pressedBackground,
         borderColor: border,
         borderRadius: radius,
         semanticLabel: label,
@@ -121,7 +126,7 @@ class AppSettingsRow extends StatelessWidget {
     return AppPressable(
       onTap: onTap,
       color: background,
-      pressedColor: theme.bgSurfacePressed,
+      pressedColor: pressedBackground,
       borderColor: border,
       borderRadius: radius,
       semanticLabel: label,
