@@ -1,12 +1,19 @@
-import 'package:core_di/core_di.dart';
+import 'dart:ui';
+
+import 'package:core_ui/core_ui.dart';
+import 'package:design_system/design_system.dart';
 import 'package:flutter/widgets.dart';
 
-import 'alba_app.dart';
+import 'src/alba_app.dart';
+import 'src/alba_bootstrap.dart';
 
-/// Punto de composición. Por ahora solo prepara el [ServiceLocator]; los
-/// plugins y sus adaptadores se registran aquí a medida que existan.
-void main() {
+/// Punto de composición: elige los adaptadores y los plugins
+/// (`alba_composition.dart`), los arranca y muestra la app.
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  final ServiceLocator services = ServiceLocator.instance;
-  runApp(AlbaApp(services: services));
+  registerDesignSystemLicenses();
+  final AlbaEnvironment environment = await bootstrapAlba(
+    languageCode: LocalizationCoordinator.resolveLanguage(PlatformDispatcher.instance.locales),
+  );
+  runApp(AlbaApp(environment: environment));
 }
