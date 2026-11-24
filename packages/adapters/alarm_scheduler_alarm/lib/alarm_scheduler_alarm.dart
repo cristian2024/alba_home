@@ -3,3 +3,4 @@
 library;
 
 export 'src/alarm_scheduler_module.dart';
+export 'src/alarm_sound_files.dart';
