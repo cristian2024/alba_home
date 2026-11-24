@@ -237,3 +237,7 @@ Los datos son pocos: unas diez alarmas, tiempos guardados de cocina, temporizado
 | Realm | — | — | — | Descontinuado por MongoDB: descartado |
 
 **Recomendación:** `isar_community` **3.4.1**, reutilizando `storage_isar` desde `flutter_packages`. Si más adelante quieres reducir el riesgo, `drift` es la salida natural, y este proyecto, con tan pocos datos, sería un buen lugar para probar el cambio de motor. home_tasks puede seguir en 3.3.2 o subir cuando quiera.
+
+## 12. Para una siguiente versión
+
+- **Canciones propias para alarmas y recordatorios.** Una carpeta local dedicada a la que llegan por USB, como las fotos. La alarma guarda la ruta de la canción, sin copiarla, para que cambiar o sustituir el archivo se note. Como Alba es el launcher y está siempre abierto, el plugin comprueba el archivo poco antes de cada alarma (y al programarla); si falta, la reprograma con el tono de alarma del sistema. Queda el riesgo de que se borre en ese último margen, en el que el paquete `alarm` sonaría en silencio y solo vibraría.
