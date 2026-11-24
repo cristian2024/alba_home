@@ -1,0 +1,133 @@
+{
+  "alarm": {
+    "name": "Alarm",
+    "description": "Alarms with repeat days, snooze and a sound that rises gently.",
+    "defaultLabel": "Alarm",
+    "duration": {
+      "hoursMinutes": "{hours} h {minutes} min",
+      "minutes": "{minutes} min",
+      "lessThanMinute": "under 1 min"
+    },
+    "days": {
+      "short": {
+        "monday": "Mon",
+        "tuesday": "Tue",
+        "wednesday": "Wed",
+        "thursday": "Thu",
+        "friday": "Fri",
+        "saturday": "Sat",
+        "sunday": "Sun"
+      },
+      "long": {
+        "monday": "Monday",
+        "tuesday": "Tuesday",
+        "wednesday": "Wednesday",
+        "thursday": "Thursday",
+        "friday": "Friday",
+        "saturday": "Saturday",
+        "sunday": "Sunday"
+      }
+    },
+    "repeat": {
+      "everyDay": "Every day",
+      "weekdays": "Mon to Fri",
+      "weekend": "Sat and Sun",
+      "onlyToday": "Today only",
+      "onlyTomorrow": "Tomorrow only",
+      "listSeparator": ", ",
+      "longEveryDay": "every day",
+      "longWeekdays": "Monday to Friday",
+      "longWeekend": "on weekends",
+      "longOnce": "once"
+    },
+    "list": {
+      "title": "Alarms",
+      "next": "Next: {time}, in {remaining}",
+      "noNext": "None active",
+      "newButton": "New",
+      "ringsIn": "rings in {remaining}",
+      "disabled": "off",
+      "blocked": "blocked by Android",
+      "rowSemantic": "Alarm at {time}, {label}, {detail}. Tap to edit.",
+      "switchSemantic": "Alarm at {time}"
+    },
+    "empty": {
+      "title": "No alarms",
+      "body": "Create one and Alba will wake you, in night mode too.",
+      "action": "New alarm"
+    },
+    "edit": {
+      "titleNew": "New alarm",
+      "titleEdit": "Edit alarm",
+      "ringsIn": "Rings in {remaining}",
+      "save": "Save",
+      "delete": "Delete alarm",
+      "name": "Name",
+      "noName": "No name",
+      "repeat": "Repeat",
+      "sound": "Sound",
+      "soundDetail": "rises over {minutes} min",
+      "snooze": "Snooze",
+      "snoozeValue": "{minutes} min",
+      "snoozeDetail": "up to {count} times",
+      "hours": "Hours",
+      "minutes": "Minutes",
+      "back": "Back",
+      "nameHint": "Work, nap…"
+    },
+    "discard": {
+      "title": "Discard changes?",
+      "body": "The alarm will stay as it was: {time}, {repeat}.",
+      "bodyNew": "The alarm won't be created.",
+      "discard": "Discard",
+      "keep": "Keep editing"
+    },
+    "repeatScreen": {
+      "title": "Repeat",
+      "summary": "Rings {days} at {time}.",
+      "noDays": "With no days selected, it rings once.",
+      "presetEveryDay": "Every day",
+      "presetWeekdays": "Weekdays",
+      "presetWeekend": "Weekend",
+      "done": "Done"
+    },
+    "sounds": {
+      "sunrise": "Gentle sunrise",
+      "bell": "Bell",
+      "pulse": "Pulse",
+      "preview": "Play {sound}"
+    },
+    "ringing": {
+      "holdToDismiss": "Hold to turn off",
+      "holding": "Keep holding…",
+      "snooze": "Snooze {minutes} min",
+      "tapAnywhere": "Tap anywhere to snooze",
+      "snoozesLeft": {
+        "one": "{n} left",
+        "other": "{n} left"
+      },
+      "noSnoozesLeft": "no more snoozes",
+      "dismissSemantic": "Turn off the {label} alarm. Press and hold.",
+      "snoozeSemantic": "Snooze {minutes} minutes"
+    },
+    "snoozed": {
+      "status": "Snoozed",
+      "title": "Rings again at {time}",
+      "detail": "{label} · snoozed {used} of {max} times",
+      "keepSleeping": "Keep sleeping",
+      "turnOff": "Turn off alarm"
+    },
+    "permission": {
+      "bannerTitle": "Alarms won't ring",
+      "bannerBody": "Android has blocked Alba's alarms.",
+      "activate": "Allow",
+      "clockTitle": "The {time} alarm won't ring",
+      "capsule": "Won't ring"
+    },
+    "status": {
+      "capsule": "Alarm {time}",
+      "block": "Alarm",
+      "blockSemantic": "Next alarm at {time}"
+    }
+  }
+}

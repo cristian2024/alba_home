@@ -1,0 +1,133 @@
+{
+  "alarm": {
+    "name": "Alarma",
+    "description": "Alarmas con días, posposición y un sonido que sube poco a poco.",
+    "defaultLabel": "Alarma",
+    "duration": {
+      "hoursMinutes": "{hours} h {minutes} min",
+      "minutes": "{minutes} min",
+      "lessThanMinute": "menos de 1 min"
+    },
+    "days": {
+      "short": {
+        "monday": "Lun",
+        "tuesday": "Mar",
+        "wednesday": "Mié",
+        "thursday": "Jue",
+        "friday": "Vie",
+        "saturday": "Sáb",
+        "sunday": "Dom"
+      },
+      "long": {
+        "monday": "lunes",
+        "tuesday": "martes",
+        "wednesday": "miércoles",
+        "thursday": "jueves",
+        "friday": "viernes",
+        "saturday": "sábado",
+        "sunday": "domingo"
+      }
+    },
+    "repeat": {
+      "everyDay": "Todos los días",
+      "weekdays": "Lun a vie",
+      "weekend": "Sáb y dom",
+      "onlyToday": "Solo hoy",
+      "onlyTomorrow": "Solo mañana",
+      "listSeparator": ", ",
+      "longEveryDay": "todos los días",
+      "longWeekdays": "de lunes a viernes",
+      "longWeekend": "sábados y domingos",
+      "longOnce": "una sola vez"
+    },
+    "list": {
+      "title": "Alarmas",
+      "next": "Próxima: {time}, en {remaining}",
+      "noNext": "Ninguna activa",
+      "newButton": "Nueva",
+      "ringsIn": "suena en {remaining}",
+      "disabled": "desactivada",
+      "blocked": "bloqueada por Android",
+      "rowSemantic": "Alarma de las {time}, {label}, {detail}. Toca para editarla.",
+      "switchSemantic": "Alarma de las {time}"
+    },
+    "empty": {
+      "title": "No hay alarmas",
+      "body": "Crea una y Alba te despertará, también en modo noche.",
+      "action": "Nueva alarma"
+    },
+    "edit": {
+      "titleNew": "Nueva alarma",
+      "titleEdit": "Editar alarma",
+      "ringsIn": "Sonará en {remaining}",
+      "save": "Guardar",
+      "delete": "Eliminar alarma",
+      "name": "Nombre",
+      "noName": "Sin nombre",
+      "repeat": "Repetir",
+      "sound": "Sonido",
+      "soundDetail": "sube en {minutes} min",
+      "snooze": "Posponer",
+      "snoozeValue": "{minutes} min",
+      "snoozeDetail": "hasta {count} veces",
+      "hours": "Horas",
+      "minutes": "Minutos",
+      "back": "Volver",
+      "nameHint": "Trabajo, siesta…"
+    },
+    "discard": {
+      "title": "¿Descartar los cambios?",
+      "body": "La alarma seguirá como estaba: {time}, {repeat}.",
+      "bodyNew": "La alarma no se creará.",
+      "discard": "Descartar",
+      "keep": "Seguir editando"
+    },
+    "repeatScreen": {
+      "title": "Repetir",
+      "summary": "Sonará {days} a las {time}.",
+      "noDays": "Sin días marcados, suena una sola vez.",
+      "presetEveryDay": "Todos los días",
+      "presetWeekdays": "Entre semana",
+      "presetWeekend": "Fin de semana",
+      "done": "Listo"
+    },
+    "sounds": {
+      "sunrise": "Amanecer suave",
+      "bell": "Campana",
+      "pulse": "Pulso",
+      "preview": "Escuchar {sound}"
+    },
+    "ringing": {
+      "holdToDismiss": "Mantén para apagar",
+      "holding": "Sigue pulsando…",
+      "snooze": "Posponer {minutes} min",
+      "tapAnywhere": "Toca en cualquier sitio para posponer",
+      "snoozesLeft": {
+        "one": "queda {n}",
+        "other": "quedan {n}"
+      },
+      "noSnoozesLeft": "ya no se puede posponer",
+      "dismissSemantic": "Apagar la alarma {label}. Mantén pulsado.",
+      "snoozeSemantic": "Posponer {minutes} minutos"
+    },
+    "snoozed": {
+      "status": "Pospuesta",
+      "title": "Vuelve a sonar a las {time}",
+      "detail": "{label} · pospuesta {used} de {max} veces",
+      "keepSleeping": "Seguir durmiendo",
+      "turnOff": "Apagar alarma"
+    },
+    "permission": {
+      "bannerTitle": "Las alarmas no sonarán",
+      "bannerBody": "Android ha bloqueado las alarmas de Alba.",
+      "activate": "Activar",
+      "clockTitle": "La alarma de las {time} no sonará",
+      "capsule": "No sonará"
+    },
+    "status": {
+      "capsule": "Alarma {time}",
+      "block": "Alarma",
+      "blockSemantic": "Próxima alarma a las {time}"
+    }
+  }
+}

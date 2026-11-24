@@ -1,0 +1,25 @@
+name: alarm_domain
+description: Dominio de la alarma en Dart puro. Alarmas con hora local y días de repetición, cálculo de la próxima vez que suenan, posponer con límite, y el contrato del repositorio con sus tests.
+version: 0.1.0
+publish_to: none
+
+environment:
+  sdk: ^3.11.0
+
+resolution: workspace
+
+dependencies:
+  # Solo para los tests de contrato (StreamQueue).
+  async: ^2.11.0
+  core_utils:
+    git:
+      url: https://github.com/cristian2024/flutter_shared.git
+      path: packages/shared/core_utils
+      tag_pattern: core_utils-v{{version}}
+    version: ^0.1.2
+  equatable: ^3.0.0
+  # Solo para los tests de contrato de `package:alarm_domain/testing.dart`.
+  test: ^1.28.0
+
+dev_dependencies:
+  flutter_lints: ^6.0.0

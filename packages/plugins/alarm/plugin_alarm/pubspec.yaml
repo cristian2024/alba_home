@@ -1,0 +1,64 @@
+name: plugin_alarm
+description: Plugin de alarma de Alba. Alarmas con días y posposición, programadas como alarmas exactas; pantallas de lista, edición y alarma sonando; cápsulas y avisos para el reloj.
+version: 0.1.0
+publish_to: none
+
+environment:
+  sdk: ^3.11.0
+  flutter: ">=3.27.0"
+
+resolution: workspace
+
+dependencies:
+  alarm_contract: ^0.1.0
+  alarm_domain: ^0.1.0
+  bloc: ^9.2.0
+  core_alarm_scheduler: ^0.1.0
+  core_contracts:
+    git:
+      url: https://github.com/cristian2024/flutter_shared.git
+      path: packages/core/core_contracts
+      tag_pattern: core_contracts-v{{version}}
+    version: ^0.1.4
+  core_di:
+    git:
+      url: https://github.com/cristian2024/flutter_shared.git
+      path: packages/core/core_di
+      tag_pattern: core_di-v{{version}}
+    version: ^0.1.2
+  core_events:
+    git:
+      url: https://github.com/cristian2024/flutter_shared.git
+      path: packages/core/core_events
+      tag_pattern: core_events-v{{version}}
+    version: ^0.2.0
+  core_ui:
+    git:
+      url: https://github.com/cristian2024/flutter_shared.git
+      path: packages/shared/core_ui
+      tag_pattern: core_ui-v{{version}}
+    version: ^0.1.3
+  core_utils:
+    git:
+      url: https://github.com/cristian2024/flutter_shared.git
+      path: packages/shared/core_utils
+      tag_pattern: core_utils-v{{version}}
+    version: ^0.1.2
+  design_system: ^0.1.1
+  equatable: ^3.0.0
+  flutter:
+    sdk: flutter
+  flutter_bloc: ^9.1.1
+  go_router: ">=14.0.0 <17.0.0"
+  slang: ^4.19.0
+  slang_flutter: ^4.19.0
+
+dev_dependencies:
+  bloc_test: ^10.0.0
+  flutter_lints: ^6.0.0
+  flutter_test:
+    sdk: flutter
+
+flutter:
+  assets:
+    - assets/sounds/
