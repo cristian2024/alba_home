@@ -19,10 +19,12 @@ abstract final class AlarmSettingsMapper {
     return (hash & 0x7FFFFFFF) | 1;
   }
 
-  static AlarmSettings toSettings(ScheduledAlarm alarm) => AlarmSettings(
+  /// [audioPath] es el archivo que suena (de `AlarmSoundFiles`); con `null`,
+  /// el tono de alarma del sistema. El asset original va en el payload.
+  static AlarmSettings toSettings(ScheduledAlarm alarm, {required String? audioPath}) => AlarmSettings(
         id: intId(alarm.id),
         dateTime: alarm.at.toLocal(),
-        assetAudioPath: alarm.soundAsset,
+        assetAudioPath: audioPath,
         loopAudio: alarm.loop,
         vibrate: alarm.vibrate,
         // En Android avisa de que la app se cerró; Alba es el launcher y se
@@ -41,6 +43,7 @@ abstract final class AlarmSettingsMapper {
           'at': alarm.at.toUtc().toIso8601String(),
           'title': alarm.title,
           'body': alarm.body,
+          'sound': alarm.soundAsset,
         }),
       );
 
@@ -60,7 +63,7 @@ abstract final class AlarmSettingsMapper {
       at: DateTime.parse(decoded['at']! as String).toUtc(),
       title: decoded['title']! as String,
       body: decoded['body'] as String?,
-      soundAsset: settings.assetAudioPath ?? '',
+      soundAsset: decoded['sound'] as String? ?? '',
       volume: volume.volume ?? 1,
       fadeIn: volume.fadeDuration ?? Duration.zero,
       vibrate: settings.vibrate,

@@ -6,11 +6,15 @@ import 'package:core_utils/core_utils.dart';
 
 import 'alarm_backend.dart';
 import 'alarm_settings_mapper.dart';
+import 'alarm_sound_files.dart';
 import 'permission_gateway.dart';
 
 /// [AlarmScheduler] sobre el paquete `alarm`: alarmas exactas con
 /// `AlarmManager.setAlarmClock`, sonido en un servicio en primer plano,
 /// notificación a pantalla completa y reprogramación al encender.
+///
+/// El sonido se copia a un archivo antes de programar ([AlarmSoundFiles]); si
+/// no se puede, suena el tono de alarma del sistema.
 ///
 /// Pasa `alarmSchedulerContract`. La pantalla completa (Android 14 o
 /// posterior) se da por concedida: `permission_handler` no la consulta.
@@ -18,9 +22,11 @@ class AlarmPackageScheduler implements AlarmScheduler {
   AlarmPackageScheduler({
     AlarmBackend backend = const AlarmPackageBackend(),
     PermissionGateway permissions = const PermissionHandlerGateway(),
+    AlarmSoundFiles? soundFiles,
     Clock clock = const SystemClock(),
   })  : _backend = backend,
         _permissions = permissions,
+        _soundFiles = soundFiles ?? AppDocumentsSoundFiles(),
         _clock = clock {
     // Escucha desde el principio para conocer el orden en que empiezan a
     // sonar, aunque nadie más esté escuchando.
@@ -31,6 +37,7 @@ class AlarmPackageScheduler implements AlarmScheduler {
 
   final AlarmBackend _backend;
   final PermissionGateway _permissions;
+  final AlarmSoundFiles _soundFiles;
   final Clock _clock;
 
   /// Ids de `alarm` sonando, en el orden en que empezaron a sonar.
@@ -39,7 +46,8 @@ class AlarmPackageScheduler implements AlarmScheduler {
   @override
   Future<void> schedule(ScheduledAlarm alarm) async {
     AlarmValidation.check(alarm, _clock.nowUtc());
-    final bool accepted = await _backend.set(AlarmSettingsMapper.toSettings(alarm));
+    final String? audioPath = await _soundFiles.prepare(alarm.soundAsset);
+    final bool accepted = await _backend.set(AlarmSettingsMapper.toSettings(alarm, audioPath: audioPath));
     if (!accepted) {
       throw StateError('Android no aceptó la alarma ${alarm.id}');
     }

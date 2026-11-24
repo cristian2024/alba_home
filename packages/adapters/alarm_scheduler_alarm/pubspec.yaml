@@ -1,6 +1,6 @@
 name: alarm_scheduler_alarm
 description: Adaptador de core_alarm_scheduler sobre el paquete alarm. Alarmas exactas que suenan con la app cerrada y tras reiniciar, con pantalla completa.
-version: 0.1.0
+version: 0.1.1
 publish_to: none
 
 environment:
@@ -26,6 +26,7 @@ dependencies:
     version: ^0.1.2
   flutter:
     sdk: flutter
+  path_provider: ^2.1.5
   permission_handler: ^13.0.2
 
 dev_dependencies:
