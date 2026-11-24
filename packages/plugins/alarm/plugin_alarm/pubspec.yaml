@@ -1,6 +1,6 @@
 name: plugin_alarm
 description: Plugin de alarma de Alba. Alarmas con días y posposición, programadas como alarmas exactas; pantallas de lista, edición y alarma sonando; cápsulas y avisos para el reloj.
-version: 0.1.0
+version: 0.1.1
 publish_to: none
 
 environment:
@@ -11,7 +11,7 @@ resolution: workspace
 
 dependencies:
   alarm_contract: ^0.1.0
-  alarm_domain: ^0.1.0
+  alarm_domain: ^0.2.0
   bloc: ^9.2.0
   core_alarm_scheduler: ^0.1.0
   core_contracts:

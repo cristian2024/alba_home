@@ -10,7 +10,12 @@ typedef AlarmNotificationTexts = ({String title, String? body}) Function(Alarm a
 
 /// Pone lo programado en Android de acuerdo con lo guardado: cada alarma
 /// activa en su próxima hora (o en la de su posposición) y las desactivadas,
-/// canceladas. No toca la alarma que está sonando.
+/// canceladas. No toca la alarma que está sonando, aunque aún no tenga sesión
+/// (la app arrancó porque sonó).
+///
+/// Una alarma sin repetición se programa una vez y guarda ese instante
+/// (`Alarm.onceAt`). Si al sincronizar ya pasó, sonó con la app cerrada (o se
+/// perdió con el teléfono apagado) y queda desactivada, como al apagarla.
 ///
 /// Se ejecuta al arrancar y tras cada cambio. Es idempotente.
 class SyncAlarmSchedule {
@@ -37,6 +42,9 @@ class SyncAlarmSchedule {
     final AlarmSession? session = await _repository.getSession();
     final List<Alarm> alarms = await _repository.getAlarms();
     final Set<String> known = <String>{for (final Alarm alarm in alarms) alarm.id};
+    final Set<String> ringing = <String>{
+      for (final ScheduledAlarm alarm in await _scheduler.watchRinging().first) alarm.id,
+    };
 
     for (final Alarm alarm in alarms) {
       if (session != null && session.alarmId == alarm.id) {
@@ -46,12 +54,29 @@ class SyncAlarmSchedule {
         // Sonando: no se toca hasta que se apague o se posponga.
         continue;
       }
+      if (ringing.contains(alarm.id)) {
+        // Sonando en Android y aún sin sesión: la crea `HandleAlarmRang`.
+        continue;
+      }
+      final DateTime? onceAt = alarm.enabled && !alarm.isRepeating ? alarm.onceAt : null;
+      if (onceAt != null) {
+        if (onceAt.isAfter(now)) {
+          await _scheduleAt(alarm, onceAt, now);
+        } else {
+          await _repository.saveAlarm(alarm.copyWith(enabled: false));
+          await _scheduler.cancel(alarm.id);
+        }
+        continue;
+      }
       final DateTime? next = NextRing.after(alarm, now, _wallClock);
       if (next == null) {
         await _scheduler.cancel(alarm.id);
-      } else {
-        await _scheduleAt(alarm, next, now);
+        continue;
       }
+      if (!alarm.isRepeating) {
+        await _repository.saveAlarm(alarm.armedFor(next));
+      }
+      await _scheduleAt(alarm, next, now);
     }
 
     // Lo programado que ya no corresponde a ninguna alarma guardada.

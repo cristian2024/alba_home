@@ -11,6 +11,13 @@ La app registra en el `ServiceLocator`:
 
 Después crea `AlarmPlugin(locator: …)`, llama a `initialize()` y añade `plugin.routes` a su `GoRouter`. Durante el horario de noche, envuelve las pantallas en `AppToneScope(tone: AppTone.night)`.
 
+## Con la app cerrada
+
+Android hace sonar la alarma aunque la app no esté abierta. Al arrancar, el plugin sincroniza lo guardado con lo programado:
+- una alarma de una sola vez cuya hora ya pasó sonó (o se perdió con el teléfono apagado) y queda desactivada;
+- una que se repite pasa a su próxima vez;
+- la que está sonando en ese momento no se toca: la atiende la pantalla de alarma sonando.
+
 ## Qué publica
 
 - `NextAlarmQuery`: la próxima alarma y si Android la deja sonar. Lo usan el reloj y la batería.

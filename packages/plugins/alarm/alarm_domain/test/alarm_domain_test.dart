@@ -93,6 +93,20 @@ void main() {
       expect(changed.vibrate, isFalse);
       expect(changed.toString(), contains('Gimnasio'));
     });
+
+    test('armedFor guarda el instante en UTC; cambiar hora, días o activación lo borra', () {
+      final DateTime at = DateTime.utc(2026, 11, 19, 11, 30);
+      final Alarm armed = alarmAt(6, 30).armedFor(at.toLocal());
+
+      expect(armed.onceAt, at);
+      expect(armed.onceAt!.isUtc, isTrue);
+      expect(armed.copyWith(label: 'Otra', soundId: 'bell').onceAt, at);
+      expect(armed.copyWith(time: AlarmTime(6, 30), repeat: <Weekday>{}, enabled: true).onceAt, at);
+      expect(armed.copyWith(time: AlarmTime(7, 0)).onceAt, isNull);
+      expect(armed.copyWith(repeat: Weekday.weekend).onceAt, isNull);
+      expect(armed.copyWith(enabled: false).onceAt, isNull);
+      expect(armed, isNot(alarmAt(6, 30)));
+    });
   });
 
   group('WallClock', () {

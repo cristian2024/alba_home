@@ -10,7 +10,7 @@ environment:
 resolution: workspace
 
 dependencies:
-  alarm_domain: ^0.1.0
+  alarm_domain: ^0.2.0
   core_alarm_scheduler: ^0.1.0
   core_di:
     git:

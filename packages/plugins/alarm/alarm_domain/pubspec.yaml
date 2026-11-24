@@ -1,6 +1,6 @@
 name: alarm_domain
 description: Dominio de la alarma en Dart puro. Alarmas con hora local y días de repetición, cálculo de la próxima vez que suenan, posponer con límite, y el contrato del repositorio con sus tests.
-version: 0.1.0
+version: 0.2.0
 publish_to: none
 
 environment:
