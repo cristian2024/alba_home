@@ -10,14 +10,23 @@ import 'app_icon.dart';
 import 'app_full_screen_alert.dart';
 
 /// Estado vacío (`Empty/State`), de 600 de ancho: icono de 48 en círculo de
-/// 96, título, explicación y una acción de 48 opcional.
+/// 96, título, explicación y una acción opcional, de 48 ([actionSize]) o de
+/// 72 donde Penpot la pide grande (la lista de alarmas vacía).
 class AppEmptyState extends StatelessWidget {
-  const AppEmptyState({super.key, required this.icon, required this.title, required this.message, this.action});
+  const AppEmptyState({
+    super.key,
+    required this.icon,
+    required this.title,
+    required this.message,
+    this.action,
+    this.actionSize = AppButtonSize.standard,
+  });
 
   final AppIconData icon;
   final String title;
   final String message;
   final AppAlertAction? action;
+  final AppButtonSize actionSize;
 
   static const double width = 600;
 
@@ -57,7 +66,7 @@ class AppEmptyState extends StatelessWidget {
             AppButton(
               label: act.label,
               icon: act.icon,
-              size: AppButtonSize.standard,
+              size: actionSize,
               semanticLabel: act.semanticLabel,
               onPressed: act.onPressed,
             ),
