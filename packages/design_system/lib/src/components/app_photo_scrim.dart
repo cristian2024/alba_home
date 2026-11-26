@@ -6,13 +6,19 @@ import '../tokens/app_theme_colors.dart';
 /// Degradado que sube desde el borde inferior de la foto del reloj y da a la
 /// hora su contraste (7:1 o más): alto 371, sólido al 72 % hasta el 42 % y
 /// luego hasta transparente. Va encima de la foto y debajo de la hora.
+///
+/// Con [opacity] el tramo sólido usa otra opacidad (el reloj la sube con
+/// fotos muy claras para no bajar de 7:1); sin ella, la del token.
 class AppPhotoScrim extends StatelessWidget {
-  const AppPhotoScrim({super.key});
+  const AppPhotoScrim({super.key, this.opacity});
+
+  final double? opacity;
 
   @override
   Widget build(BuildContext context) {
     final AppThemeColors theme = AppThemeColors.of(context);
-    final Color scrimEnd = theme.photoScrimEnd;
+    final double? alpha = opacity;
+    final Color scrimEnd = alpha == null ? theme.photoScrimEnd : theme.photoScrimEnd.withValues(alpha: alpha);
     return Align(
       alignment: Alignment.bottomCenter,
       child: IgnorePointer(
