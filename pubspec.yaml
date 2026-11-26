@@ -8,7 +8,7 @@ workspace:
   # Un solo patrón con alternativas: pub falla si una entrada no encuentra
   # ningún paquete, y cada rama trae solo su proyecto. Cada carpeta nueva
   # (packages/design_system, packages/plugins/...) se añade como alternativa.
-  - "{apps/alba,packages/core/*,packages/design_system,packages/design_system/example,packages/plugins/*/*,packages/contracts/*,packages/adapters/*,packages/plugins/*/plugin_*/example}"
+  - "{apps/alba,packages/core/*,packages/design_system,packages/design_system/example,packages/plugins/*/*,packages/contracts/*,packages/adapters/*,packages/plugins/*/plugin_*/example,packages/shared/*}"
 
 # `alarm` (alarm_scheduler_alarm) exige equatable ^2 en todas sus versiones
 # hasta la 5.15.0; el resto usa ^3. Solo usa `extends Equatable` y `props`, que
