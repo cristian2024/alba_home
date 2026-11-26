@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.1.2 - 2026-11-26
+
+### Corregido
+
+- `AppFullScreenAlert` de noche: la acción principal va rellena en ámbar (`AppButtonVariant.nightPrimary`), como `Alert/FullScreen/Night` en Penpot; antes las dos acciones salían iguales.
+- `AppFullScreenAlert` como página sin `Material` encima (p. ej. en una ruta propia) ya no subraya sus textos en amarillo: lleva su propio estilo de texto base.
+
 ## 0.1.1 - 2026-11-22
 
 ### Añadido

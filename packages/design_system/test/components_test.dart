@@ -750,6 +750,15 @@ void main() {
         expect(actions, <String>['add', 'stop']);
         expect(tester.getSize(find.byType(AppFullScreenAlert)), const Size(891, 411));
         expect(tester.takeException(), isNull);
+        final AppButton primary = tester.widget<AppButton>(find.widgetWithText(AppButton, 'Detener'));
+        expect(
+          primary.variant,
+          variant == AppFullScreenVariant.night ? AppButtonVariant.nightPrimary : AppButtonVariant.primary,
+        );
+        final DefaultTextStyle base = tester.widget<DefaultTextStyle>(
+          find.ancestor(of: find.text('Pasta lista'), matching: find.byType(DefaultTextStyle)).first,
+        );
+        expect(base.style.decoration, isNot(TextDecoration.underline));
       });
     }
 

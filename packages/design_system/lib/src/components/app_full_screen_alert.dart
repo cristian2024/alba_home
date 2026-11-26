@@ -66,56 +66,61 @@ class AppFullScreenAlert extends StatelessWidget {
       liveRegion: true,
       child: ColoredBox(
         color: night ? AppNightColors.bg : theme.bgCanvas,
-        child: Padding(
-          padding: const EdgeInsets.fromLTRB(AppSpacing.s1200, AppSpacing.s1000, AppSpacing.s1200, AppSpacing.s1200),
-          child: Column(
-            children: <Widget>[
-              Container(
-                width: 80,
-                height: 80,
-                decoration: BoxDecoration(color: iconBackground, shape: BoxShape.circle),
-                alignment: Alignment.center,
-                child: AppIcon(icon, size: 40, color: iconColor),
-              ),
-              const SizedBox(height: AppSpacing.s500),
-              Text(
-                title,
-                maxLines: 1,
-                textAlign: TextAlign.center,
-                style: AppTypography.display.copyWith(color: night ? AppNightColors.textPrimary : theme.textPrimary),
-              ),
-              const SizedBox(height: AppSpacing.s200),
-              Text(
-                subtitle,
-                maxLines: 2,
-                textAlign: TextAlign.center,
-                style: AppTypography.bodyLarge.copyWith(
-                  color: night ? AppNightColors.textSecondary : theme.textSecondary,
+        // Ocupa la pantalla sin `Material` encima: sin este estilo base, los
+        // textos heredarían el subrayado amarillo de depuración de Flutter.
+        child: DefaultTextStyle(
+          style: AppTypography.body.copyWith(color: night ? AppNightColors.textPrimary : theme.textPrimary),
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(AppSpacing.s1200, AppSpacing.s1000, AppSpacing.s1200, AppSpacing.s1200),
+            child: Column(
+              children: <Widget>[
+                Container(
+                  width: 80,
+                  height: 80,
+                  decoration: BoxDecoration(color: iconBackground, shape: BoxShape.circle),
+                  alignment: Alignment.center,
+                  child: AppIcon(icon, size: 40, color: iconColor),
                 ),
-              ),
-              const Spacer(),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                spacing: AppSpacing.s600,
-                children: <Widget>[
-                  if (second != null)
-                    AppButton(
-                      label: second.label,
-                      icon: second.icon,
-                      variant: night ? AppButtonVariant.night : AppButtonVariant.secondary,
-                      semanticLabel: second.semanticLabel,
-                      onPressed: second.onPressed,
-                    ),
-                  AppButton(
-                    label: primary.label,
-                    icon: primary.icon,
-                    variant: night ? AppButtonVariant.night : AppButtonVariant.primary,
-                    semanticLabel: primary.semanticLabel,
-                    onPressed: primary.onPressed,
+                const SizedBox(height: AppSpacing.s500),
+                Text(
+                  title,
+                  maxLines: 1,
+                  textAlign: TextAlign.center,
+                  style: AppTypography.display.copyWith(color: night ? AppNightColors.textPrimary : theme.textPrimary),
+                ),
+                const SizedBox(height: AppSpacing.s200),
+                Text(
+                  subtitle,
+                  maxLines: 2,
+                  textAlign: TextAlign.center,
+                  style: AppTypography.bodyLarge.copyWith(
+                    color: night ? AppNightColors.textSecondary : theme.textSecondary,
                   ),
-                ],
-              ),
-            ],
+                ),
+                const Spacer(),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  spacing: AppSpacing.s600,
+                  children: <Widget>[
+                    if (second != null)
+                      AppButton(
+                        label: second.label,
+                        icon: second.icon,
+                        variant: night ? AppButtonVariant.night : AppButtonVariant.secondary,
+                        semanticLabel: second.semanticLabel,
+                        onPressed: second.onPressed,
+                      ),
+                    AppButton(
+                      label: primary.label,
+                      icon: primary.icon,
+                      variant: night ? AppButtonVariant.nightPrimary : AppButtonVariant.primary,
+                      semanticLabel: primary.semanticLabel,
+                      onPressed: primary.onPressed,
+                    ),
+                  ],
+                ),
+              ],
+            ),
           ),
         ),
       ),
