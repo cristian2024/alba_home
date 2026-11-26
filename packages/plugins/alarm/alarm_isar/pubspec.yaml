@@ -1,6 +1,6 @@
 name: alarm_isar
 description: Adaptador Isar de la alarma. Registra AlarmRepository sobre storage_isar.
-version: 0.1.0
+version: 0.1.1
 publish_to: none
 
 environment:
@@ -10,7 +10,7 @@ environment:
 resolution: workspace
 
 dependencies:
-  alarm_domain: ^0.1.0
+  alarm_domain: ^0.2.0
   core_di:
     git:
       url: https://github.com/cristian2024/flutter_shared.git

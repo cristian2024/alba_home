@@ -30,7 +30,13 @@ void alarmRepositoryContract(
       maxSnoozes: 2,
       vibrate: false,
     );
-    final Alarm nap = Alarm(id: '0c1e7f6e-38a4-4c2a-8c6e-5b1d2f0a9e77', time: AlarmTime(16, 30), label: '', soundId: 'bell');
+    final Alarm nap = Alarm(
+      id: '0c1e7f6e-38a4-4c2a-8c6e-5b1d2f0a9e77',
+      time: AlarmTime(16, 30),
+      label: '',
+      soundId: 'bell',
+      onceAt: DateTime.utc(2026, 11, 18, 21, 30),
+    );
     final Alarm early = Alarm(
       id: 'b8d2a5e4-1f3c-4a7b-9e0d-2c6f8a1b3d55',
       time: AlarmTime(5, 0),

@@ -207,6 +207,47 @@ void main() {
       expect((await world.scheduler.scheduled()).single.at, t0.add(const Duration(seconds: 1)));
     });
 
+    test('una de una sola vez guarda el instante para el que se programó', () async {
+      final Alarm alarm = await world.create(AlarmDraft(time: AlarmTime(23, 30)));
+
+      expect((await world.repository.getAlarm(alarm.id))!.onceAt, local(18, 23, 30));
+      world.clock.advance(const Duration(minutes: 5));
+      await world.sync();
+      expect((await world.scheduler.scheduled()).single.at, local(18, 23, 30));
+    });
+
+    test('una de una sola vez que sonó con la app cerrada queda desactivada', () async {
+      final Alarm alarm = await world.create(AlarmDraft(time: AlarmTime(23, 30)));
+      world.clock.advance(const Duration(minutes: 20));
+
+      await world.sync();
+
+      final Alarm stored = (await world.repository.getAlarm(alarm.id))!;
+      expect(stored.enabled, isFalse);
+      expect(stored.onceAt, isNull);
+      expect(await world.scheduler.scheduled(), isEmpty);
+    });
+
+    test('una que se repite y sonó con la app cerrada pasa a su próxima vez', () async {
+      await world.create(AlarmDraft(time: AlarmTime(23, 30), repeat: Weekday.everyDay));
+      world.clock.advance(const Duration(minutes: 20));
+
+      await world.sync();
+
+      expect((await world.scheduler.scheduled()).single.at, local(19, 23, 30));
+    });
+
+    test('no toca la que suena en Android aunque la app aún no tenga sesión', () async {
+      final Alarm alarm = await world.create(AlarmDraft(time: AlarmTime(23, 30)));
+      world.clock.advance(const Duration(minutes: 13));
+      world.scheduler.fire(alarm.id);
+
+      await world.sync();
+
+      expect((await world.repository.getAlarm(alarm.id))!.enabled, isTrue);
+      expect(await world.scheduler.watchRinging().first, hasLength(1));
+    });
+
     test('usa el título por defecto si la alarma no tiene nombre', () async {
       await world.create(AlarmDraft(time: AlarmTime(6, 30)));
 
@@ -318,7 +359,7 @@ void main() {
 
       await world.handleRang(alarm.id);
       final RingingAlarm? ringing = await watch().first;
-      expect(ringing!.alarm, alarm);
+      expect(ringing!.alarm, await world.repository.getAlarm(alarm.id));
 
       await world.repository.saveSession(AlarmSession(alarmId: 'borrada', startedAt: t0));
       expect(await watch().first, isNull);

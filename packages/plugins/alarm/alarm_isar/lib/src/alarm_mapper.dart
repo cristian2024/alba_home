@@ -16,7 +16,8 @@ abstract final class AlarmMapper {
     ..riseSeconds = alarm.rise.inSeconds
     ..snoozeSeconds = alarm.snooze.inSeconds
     ..maxSnoozes = alarm.maxSnoozes
-    ..vibrate = alarm.vibrate;
+    ..vibrate = alarm.vibrate
+    ..onceAt = alarm.onceAt?.toUtc();
 
   static Alarm fromIsar(IsarAlarm model) => Alarm(
         id: model.id,
@@ -29,6 +30,7 @@ abstract final class AlarmMapper {
         snooze: Duration(seconds: model.snoozeSeconds),
         maxSnoozes: model.maxSnoozes,
         vibrate: model.vibrate,
+        onceAt: model.onceAt?.toUtc(),
       );
 
   static IsarAlarmSession sessionToIsar(AlarmSession session) => IsarAlarmSession()

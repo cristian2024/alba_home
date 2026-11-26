@@ -23,4 +23,7 @@ class IsarAlarm {
   late int snoozeSeconds;
   late int maxSnoozes;
   late bool vibrate;
+
+  /// Instante (UTC) de una alarma sin repetición ya programada.
+  DateTime? onceAt;
 }

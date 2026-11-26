@@ -402,7 +402,7 @@ void main() {
       expect(harness.plugin.nameKey, 'alarm.name');
       expect(harness.plugin.descriptionKey, 'alarm.description');
       expect(harness.plugin.icon, AppIcons.alarm.iconData);
-      expect(harness.plugin.version, '0.1.0');
+      expect(harness.plugin.version, '0.1.1');
       expect(harness.plugin.entryRoute, AlarmRoutes.base);
       expect(await harness.plugin.isAvailable(), isTrue);
       expect(harness.plugin.routes, hasLength(5));
