@@ -1,6 +1,6 @@
 # Alba · bitácora de desarrollo (fases 3 a 5)
 
-Última actualización: 2026-11-22.
+Última actualización: 2026-11-26.
 
 ## Fase actual
 
@@ -49,8 +49,13 @@ Cuatro paquetes en `packages/core/` (añadido `packages/core/*` al workspace), D
 - `design_system` 0.1.1 (PR #9, mergeado): `AppToneScope`, `AppAlarmRow.blocked` y fuente `AlbaIcons` (IconData por icono, generada con `tool/generate_icon_font.py`). En la revisión, los colores del tema repetidos en un `build` pasan a variables (fila de alarma y cinco componentes más).
 - `plugin_alarm` en local: casos de uso al 100 %, sonidos generados (`tool/generate_sounds.py`), slang es/en (sin fecha en la cabecera), pantallas 03.1–03.8, diálogos de nombre/sonido/posponer (sin diseño en Penpot), `AlarmPlugin` con cápsulas, avisos y `NextAlarmQuery`, y `example/` en memoria. 60 tests en verde. Arreglos que salieron de los tests: «mantener para apagar» soltado antes de tiempo posponía la alarma; la primera emisión de cápsulas salía vacía; cabecera 12 px más alta que en Penpot; diálogo de posposición desbordaba.
 - **Resuelto en `flutter_shared` (2026-11-23):** `core_ui` y `storage_isar` no compilaban por git porque su código generado (`*.g.dart`) no se versionaba. PRs #9 (core_ui 0.1.3, slang sin fecha), #10 (storage_isar 0.3.2) y #11 (regla en su CLAUDE.md) mergeados; etiquetas `core_ui-v0.1.3` y `storage_isar-v0.3.2` publicadas. PR #12: paso de la CI que regenera y falla si algún `*.g.dart` cambia. Alba ya no usa `pubspec_overrides.yaml`: `core_ui ^0.1.3` y `storage_isar ^0.3.2` por git, verify en verde.
-- Siguiente: abrir los PRs de la alarma (contrato, adaptador, funcionalidad y raíz); comparar con Impeccable a 891 × 411 y probar en el Mate 20 Lite.
-- Sin teléfono conectado por `adb` todavía.
+- PRs de la alarma mergeados (2026-11-23 a 2026-11-26): raíz #10, `alarm_contract` #11, `alarm_scheduler_alarm` #12, funcionalidad #13 y PLAN (canciones propias para una siguiente versión) #14.
+- `alarm_scheduler_alarm` 0.1.1 (#15): `alarm` solo abre como asset las rutas que empiezan por `assets/`; la de un asset de otro paquete la buscaba como archivo y la alarma sonaba en silencio (comprobado en el emulador: `ENOENT`). Ahora copia el sonido a `alarm_sounds/` en los documentos de la app y, si falla, suena el tono del sistema.
+- `alarm_domain` 0.2.0, `alarm_isar` 0.1.1 y `plugin_alarm` 0.1.1 (#16): una alarma de una sola vez guarda el instante para el que se programó (`onceAt`); si sonó con la app cerrada, al arrancar queda desactivada. La sincronización ya no reprograma (y corta) la alarma que suena al arrancar.
+- `apps/alba` 0.2.0+2 (#17): compone `IsarStorage` con `AlarmIsar`, `AlarmSchedulerModule` y `AlarmPlugin` con su ciclo de vida; `AmbientHost` y `AmbientAlertNavigator` abren la pantalla de alarma sonando esté donde esté la app; idioma del sistema; `compileSdk` 37 (lo exige `permission_handler`). Mientras no haya reloj, el inicio lleva a la lista de alarmas.
+- Probado en el emulador (Android 16): suena con la app cerrada, al abrir mientras suena aparece «sonando» sin cortarse, mantener apaga y desactiva, tras reiniciar no vuelve a sonar y queda desactivada. Una vez se cortó sola a los 2 min y no se repitió.
+- Comparación con Impeccable a 891 × 411 (claro, oscuro y noche) contra los PNG de Penpot: PRs #18 (`design_system` 0.1.2: acción principal rellena de noche, sin subrayado de depuración en `AppFullScreenAlert`, `AppEmptyState.actionSize`) y #19 (`plugin_alarm` 0.1.2: cabecera de 72, lista vacía con una sola acción, sin «Próxima» con las alarmas bloqueadas, X en «Descartar», pista en `type.label`, «mantener para apagar» sin oscurecerse y con la pista oculta). En la revisión del #19, las secciones de textos leídas varias veces pasan a variables (regla en `CLAUDE.md`).
+- Siguiente: probar en el Mate 20 Lite (pantalla apagada, app cerrada, reinicio, EMUI) y visto bueno de la alarma.
 
 ### design_system (paso 4)
 
@@ -86,11 +91,12 @@ Cuatro paquetes en `packages/core/` (añadido `packages/core/*` al workspace), D
 | Repo de Alba | `alba_home`; la carpeta sigue llamándose `phone_work`; app en `apps/alba` (PLAN §9) |
 | Identificador Android | Provisional, el básico: `com.example.alba`. Se revisa más adelante |
 | Alarma: «Nueva» y «Guardar» | Suben de 48 a **72**, como las cabeceras de Cocina (desviación respecto a los PNG de 03.1, 03.3 y 03.7) |
+| Alarma de una sola vez ya pasada hoy (usuario, 2026-11-26) | Se rotula «Solo mañana», que es lo que ocurrirá, aunque 03.1 y 03.7 digan «Solo hoy» |
 | Aviso de noche «no llega a la alarma» | Texto corto «No llega a la alarma» en la cápsula del reloj (02.6n); texto largo «Con 9 % no llega a las 6:30» en el banner (07.5n) |
 | Isar | `isar_community` 3.4.1 (la skill dice 3.3.2; manda la decisión del proyecto) |
 
 ## Pendientes
 
 - Fase 3, pasos 1 a 5 (ver `PROMPT_desarrollo.md`).
-- Conectar el Mate 20 Lite por `adb` antes de la fase 4 (ahora no hay dispositivo).
+- Conectar el Mate 20 Lite por `adb` para la prueba de la alarma (ahora no hay dispositivo).
 - Revisar el identificador Android antes del APK de release.
