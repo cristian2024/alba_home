@@ -42,7 +42,15 @@ class AlarmListScreen extends StatelessWidget {
                   leading: onBack == null ? null : AppIcons.chevronLeft,
                   leadingLabel: strings.edit.back,
                   onLeading: onBack,
-                  action: AppButton(label: strings.list.newButton, icon: AppIcons.alarmPlus, onPressed: onCreate),
+                  // Vacía, la única acción es la del centro (03.2).
+                  action: state.loaded && state.entries.isEmpty
+                      ? null
+                      : AppButton(
+                          label: strings.list.newButton,
+                          icon: AppIcons.alarmPlus,
+                          size: AppButtonSize.standard,
+                          onPressed: onCreate,
+                        ),
                 ),
                 if (!state.loaded)
                   const SizedBox.shrink()
@@ -53,7 +61,12 @@ class AlarmListScreen extends StatelessWidget {
                         icon: AppIcons.alarm,
                         title: strings.empty.title,
                         message: strings.empty.body,
-                        action: AppAlertAction(label: strings.empty.action, icon: AppIcons.alarmPlus, onPressed: onCreate),
+                        action: AppAlertAction(
+                          label: strings.empty.action,
+                          icon: AppIcons.alarmPlus,
+                          onPressed: onCreate,
+                        ),
+                        actionSize: AppButtonSize.large,
                       ),
                     ),
                   )
@@ -100,6 +113,10 @@ class AlarmListScreen extends StatelessWidget {
   String _nextSummary(AlarmListState state) {
     final AlarmTranslations$alarm$es strings = alarmStrings.alarm;
     final DateTime? next = state.next?.ringsAt;
+    // Bloqueadas por Android no suenan: el banner lo dice (03.7).
+    if (!state.canRing) {
+      return '';
+    }
     if (next == null) {
       return state.loaded && state.entries.isNotEmpty ? strings.list.noNext : '';
     }
@@ -139,10 +156,10 @@ class _AlarmRow extends StatelessWidget {
     final String status = !alarm.enabled
         ? strings.list.disabled
         : !canRing
-            ? strings.list.blocked
-            : alarm.isRepeating && next != null
-                ? strings.list.ringsIn(remaining: AlarmFormat.remaining(next.difference(now)))
-                : '';
+        ? strings.list.blocked
+        : alarm.isRepeating && next != null
+        ? strings.list.ringsIn(remaining: AlarmFormat.remaining(next.difference(now)))
+        : '';
     final String detail = status.isEmpty ? repeat : '$repeat · $status';
     final String time = AlarmFormat.paddedOf(alarm.time);
     return AppAlarmRow(
@@ -151,7 +168,11 @@ class _AlarmRow extends StatelessWidget {
       detail: detail,
       enabled: alarm.enabled,
       blocked: alarm.enabled && !canRing,
-      semanticLabel: strings.list.rowSemantic(time: AlarmFormat.timeOf(alarm.time), label: AlarmFormat.label(alarm), detail: detail),
+      semanticLabel: strings.list.rowSemantic(
+        time: AlarmFormat.timeOf(alarm.time),
+        label: AlarmFormat.label(alarm),
+        detail: detail,
+      ),
       onTap: onTap,
       onEnabledChanged: onEnabledChanged,
     );

@@ -81,7 +81,7 @@ class AlarmPlugin extends HomePlugin implements HomePluginEntryRoute, AmbientSta
   IconData get icon => AppIcons.alarm.iconData;
 
   @override
-  String get version => '0.1.1';
+  String get version => '0.1.2';
 
   @override
   String get entryRoute => AlarmRoutes.base;

@@ -39,11 +39,22 @@ class AlarmRingingScreen extends StatelessWidget {
   }
 }
 
-class _RingingBody extends StatelessWidget {
+class _RingingBody extends StatefulWidget {
   const _RingingBody({required this.ringing, required this.night});
 
   final RingingAlarm ringing;
   final bool night;
+
+  @override
+  State<_RingingBody> createState() => _RingingBodyState();
+}
+
+class _RingingBodyState extends State<_RingingBody> {
+  /// Manteniendo para apagar: la pista de abajo deja sitio a la barra (03.5b).
+  bool _holding = false;
+
+  RingingAlarm get ringing => widget.ringing;
+  bool get night => widget.night;
 
   @override
   Widget build(BuildContext context) {
@@ -76,10 +87,7 @@ class _RingingBody extends StatelessWidget {
             ),
             Expanded(
               child: Center(
-                child: AppClockTime(
-                  AlarmFormat.paddedOf(alarm.time),
-                  tone: night ? AppTone.night : AppTone.surface,
-                ),
+                child: AppClockTime(AlarmFormat.paddedOf(alarm.time), tone: night ? AppTone.night : AppTone.surface),
               ),
             ),
             Row(
@@ -93,6 +101,7 @@ class _RingingBody extends StatelessWidget {
                   semanticLabel: strings.ringing.dismissSemantic(label: label),
                   variant: night ? AppButtonVariant.night : AppButtonVariant.secondary,
                   onDismiss: cubit.dismiss,
+                  onHoldingChanged: (bool holding) => setState(() => _holding = holding),
                 ),
                 if (canSnooze)
                   AppButton(
@@ -106,7 +115,13 @@ class _RingingBody extends StatelessWidget {
             ),
             Padding(
               padding: const EdgeInsets.only(bottom: AppSpacing.s400),
-              child: Text(hint, style: AppTypography.caption.copyWith(color: secondaryText)),
+              child: Visibility(
+                visible: !_holding,
+                maintainSize: true,
+                maintainAnimation: true,
+                maintainState: true,
+                child: Text(hint, style: AppTypography.label.copyWith(color: secondaryText)),
+              ),
             ),
           ],
         ),

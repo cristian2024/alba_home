@@ -1,10 +1,12 @@
+import 'dart:async';
+
 import 'package:design_system/design_system.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/semantics.dart';
 
 /// Botón de 72 que hay que mantener pulsado [holdDuration] para actuar
 /// (03.5b): mientras se mantiene cambia la etiqueta y una pista de 8 se va
-/// llenando debajo. Soltar antes no hace nada. Con TalkBack, mantener
+/// llenando debajo; el botón conserva su color. Soltar antes no hace nada. Con TalkBack, mantener
 /// pulsado (doble toque largo) actúa al momento.
 class HoldToDismissButton extends StatefulWidget {
   const HoldToDismissButton({
@@ -16,6 +18,7 @@ class HoldToDismissButton extends StatefulWidget {
     this.icon = AppIcons.alarmOff,
     this.variant = AppButtonVariant.secondary,
     this.holdDuration = const Duration(seconds: 1),
+    this.onHoldingChanged,
   });
 
   final String label;
@@ -25,6 +28,10 @@ class HoldToDismissButton extends StatefulWidget {
   final AppIconData icon;
   final AppButtonVariant variant;
   final Duration holdDuration;
+
+  /// Al empezar a mantener (`true`) y al soltar o vaciarse la pista
+  /// (`false`), para que la pantalla haga sitio a la pista.
+  final ValueChanged<bool>? onHoldingChanged;
 
   @override
   State<HoldToDismissButton> createState() => _HoldToDismissButtonState();
@@ -37,10 +44,15 @@ class _HoldToDismissButtonState extends State<HoldToDismissButton> with SingleTi
   void _onStatus(AnimationStatus status) {
     if (status == AnimationStatus.completed) {
       widget.onDismiss();
+    } else if (status == AnimationStatus.dismissed) {
+      widget.onHoldingChanged?.call(false);
     }
   }
 
-  void _start() => _progress.forward(from: 0);
+  void _start() {
+    widget.onHoldingChanged?.call(true);
+    unawaited(_progress.forward(from: 0));
+  }
 
   void _cancel() {
     if (!_progress.isCompleted) {
@@ -85,7 +97,7 @@ class _HoldToDismissButtonState extends State<HoldToDismissButton> with SingleTi
                   onPointerCancel: (PointerCancelEvent event) => _cancel(),
                   child: DecoratedBox(
                     decoration: BoxDecoration(
-                      color: holding ? colors.pressed : colors.background,
+                      color: colors.background,
                       borderRadius: BorderRadius.circular(AppRadii.full),
                       border: colors.border == null
                           ? null

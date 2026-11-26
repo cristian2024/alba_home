@@ -40,21 +40,26 @@ class AlarmEditScreen extends StatelessWidget {
     final bool? discard = await Navigator.of(context).push<bool>(
       MaterialPageRoute<bool>(
         fullscreenDialog: true,
-        builder: (BuildContext context) => AppFullScreenAlert(
-          icon: AppIcons.pencil,
-          title: strings.discard.title,
-          subtitle: state.isNew
-              ? strings.discard.bodyNew
-              : strings.discard.body(time: AlarmFormat.timeOf(original.time), repeat: AlarmFormat.repeatLong(original.repeat)),
-          secondary: AppAlertAction(
-            label: strings.discard.discard,
-            icon: AppIcons.trash,
-            onPressed: () => Navigator.of(context).pop(true),
-          ),
-          primary: AppAlertAction(
-            label: strings.discard.keep,
+        builder: (BuildContext context) => Scaffold(
+          body: AppFullScreenAlert(
             icon: AppIcons.pencil,
-            onPressed: () => Navigator.of(context).pop(false),
+            title: strings.discard.title,
+            subtitle: state.isNew
+                ? strings.discard.bodyNew
+                : strings.discard.body(
+                    time: AlarmFormat.timeOf(original.time),
+                    repeat: AlarmFormat.repeatLong(original.repeat),
+                  ),
+            secondary: AppAlertAction(
+              label: strings.discard.discard,
+              icon: AppIcons.x,
+              onPressed: () => Navigator.of(context).pop(true),
+            ),
+            primary: AppAlertAction(
+              label: strings.discard.keep,
+              icon: AppIcons.pencil,
+              onPressed: () => Navigator.of(context).pop(false),
+            ),
           ),
         ),
       ),
@@ -107,13 +112,16 @@ class AlarmEditScreen extends StatelessWidget {
                       children: <Widget>[
                         AlarmHeader(
                           title: state.isNew ? strings.edit.titleNew : strings.edit.titleEdit,
-                          subtitle: strings.edit.ringsIn(
-                            remaining: AlarmFormat.remaining(cubit.untilNextRing()),
-                          ),
+                          subtitle: strings.edit.ringsIn(remaining: AlarmFormat.remaining(cubit.untilNextRing())),
                           leading: AppIcons.x,
                           leadingLabel: strings.discard.discard,
                           onLeading: () => _close(context),
-                          action: AppButton(label: strings.edit.save, icon: AppIcons.check, onPressed: () => _save(context)),
+                          action: AppButton(
+                            label: strings.edit.save,
+                            icon: AppIcons.check,
+                            size: AppButtonSize.standard,
+                            onPressed: () => _save(context),
+                          ),
                         ),
                         Expanded(
                           child: Padding(
@@ -171,10 +179,7 @@ class AlarmEditScreen extends StatelessWidget {
                                       ),
                                       AppSettingsField(
                                         label: strings.edit.repeat,
-                                        value: AlarmFormat.repeatShort(
-                                          draft.repeat,
-                                          ringsToday: cubit.ringsToday(),
-                                        ),
+                                        value: AlarmFormat.repeatShort(draft.repeat, ringsToday: cubit.ringsToday()),
                                         onTap: () => _editRepeat(context, state),
                                       ),
                                       AppSettingsField(
@@ -198,7 +203,10 @@ class AlarmEditScreen extends StatelessWidget {
                                             SnoozeChoice(minutes: draft.snooze.inMinutes, times: draft.maxSnoozes),
                                           );
                                           if (choice != null) {
-                                            cubit.setSnooze(snooze: Duration(minutes: choice.minutes), maxSnoozes: choice.times);
+                                            cubit.setSnooze(
+                                              snooze: Duration(minutes: choice.minutes),
+                                              maxSnoozes: choice.times,
+                                            );
                                           }
                                         },
                                       ),
