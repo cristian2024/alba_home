@@ -43,7 +43,8 @@ void main() {
       await harness.pump(tester, AlarmRoutes.base);
 
       expect(find.text('Próxima: 6:30, en 7 h 13 min'), findsOneWidget);
-      expect(tester.getSize(find.widgetWithText(AppButton, 'Nueva')).height, AppSizes.controlMedium);
+      // 72 y no 48 como en Penpot: decisión del proyecto (ESTADO_desarrollo.md).
+      expect(tester.getSize(find.widgetWithText(AppButton, 'Nueva')).height, AppSizes.controlLarge);
       expect(find.text('Lun a vie · suena en 7 h 13 min'), findsOneWidget);
       expect(find.text('Sáb y dom · desactivada'), findsOneWidget);
       expect(find.text('Solo mañana'), findsOneWidget);

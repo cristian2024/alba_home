@@ -48,12 +48,7 @@ class AlarmListScreen extends StatelessWidget {
                   // Vacía, la única acción es la del centro (03.2).
                   action: state.loaded && state.entries.isEmpty
                       ? null
-                      : AppButton(
-                          label: listStrings.newButton,
-                          icon: AppIcons.alarmPlus,
-                          size: AppButtonSize.standard,
-                          onPressed: onCreate,
-                        ),
+                      : AppButton(label: listStrings.newButton, icon: AppIcons.alarmPlus, onPressed: onCreate),
                 ),
                 if (!state.loaded)
                   const SizedBox.shrink()

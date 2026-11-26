@@ -6,7 +6,7 @@
 
 Diferencias con Penpot encontradas al comparar las pantallas a 891 × 411 en claro, oscuro y noche:
 
-- La cabecera mide 72 aunque no haya botón de volver, y «Nueva» y «Guardar» son botones de 48 (03.1, 03.3).
+- La cabecera mide 72 aunque no haya botón de volver (03.1, 03.3). «Nueva» y «Guardar» siguen en 72, como decidió el proyecto frente a los 48 de Penpot.
 - La lista vacía no repite «Nueva» en la cabecera, y «Nueva alarma» es grande (03.2).
 - Con las alarmas bloqueadas, la cabecera no anuncia la próxima: no sonará (03.7).
 - «Descartar» lleva la X, y el aviso de descartar cambios ya no subraya sus textos (03.3b).

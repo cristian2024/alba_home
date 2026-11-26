@@ -117,12 +117,7 @@ class AlarmEditScreen extends StatelessWidget {
                           leading: AppIcons.x,
                           leadingLabel: strings.discard.discard,
                           onLeading: () => _close(context),
-                          action: AppButton(
-                            label: editStrings.save,
-                            icon: AppIcons.check,
-                            size: AppButtonSize.standard,
-                            onPressed: () => _save(context),
-                          ),
+                          action: AppButton(label: editStrings.save, icon: AppIcons.check, onPressed: () => _save(context)),
                         ),
                         Expanded(
                           child: Padding(
