@@ -45,7 +45,7 @@ Mismas pautas que home_tasks y la skill `flutter-guidelines`; aquí va lo propio
 - Ningún plugin importa a otro: eventos para hechos (`AlarmRang`, `TimerFinished`) y capacidades para consultas (`NextAlarmQuery`…), publicados en `packages/contracts/`.
 
 ## Convenciones de código
-- Las de la skill `flutter-guidelines`: tipos explícitos (`always_specify_types`, `toleratedCodes` vacío en `tool/analyze.dart`), nada de funciones que devuelven widgets, widgets reutilizables agnósticos, getters privados para `widget.x` repetido, estilos del tema en variables al inicio de `build`, constantes en su `abstract final class`, nombres descriptivos, `Semantics` o `tooltip` en todo lo interactivo.
+- Las de la skill `flutter-guidelines`: tipos explícitos (`always_specify_types`, `toleratedCodes` vacío en `tool/analyze.dart`), nada de funciones que devuelven widgets, widgets reutilizables agnósticos, getters privados para `widget.x` repetido, estilos del tema y secciones de textos leídas varias veces (`final AlarmTranslations$alarm$edit$es editStrings = alarmStrings.alarm.edit;`) en variables al inicio del método, constantes en su `abstract final class`, nombres descriptivos, `Semantics` o `tooltip` en todo lo interactivo.
 - Dominio en Dart puro, UUID v4 y `DateTime` en UTC, con `Clock` e `IdGenerator` inyectados. Igualdad con `Equatable`.
 - Textos con slang, en español e inglés, inyectados por el consumidor (`core_ui`). Nada de textos escritos a mano en la UI.
 - Colores, medidas y textos siempre desde `design_system` (`AppThemeColors.of(context)`, `AppTypography`, `AppSpacing`…), nunca valores a mano. Los tokens de `packages/design_system/lib/src/tokens/` se generan desde `design/referencia_penpot/` con `dart run tool/generate_tokens.dart` y no se editan a mano.
