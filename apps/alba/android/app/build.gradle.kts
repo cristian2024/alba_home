@@ -6,7 +6,9 @@ plugins {
 
 android {
     namespace = "com.example.alba"
-    compileSdk = flutter.compileSdkVersion
+    // permission_handler_android exige compilar con el SDK 37. No cambia en qué
+    // Android funciona la app (eso lo fija minSdk).
+    compileSdk = 37
     ndkVersion = flutter.ndkVersion
 
     compileOptions {
