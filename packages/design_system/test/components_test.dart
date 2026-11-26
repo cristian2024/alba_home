@@ -777,6 +777,19 @@ void main() {
       await tester.tap(find.text('Cómo copiar fotos'));
       expect(taps, 1);
       expect(tester.getSize(find.byType(AppEmptyState)).width, 600);
+      expect(tester.getSize(find.byType(AppButton)).height, AppSizes.controlMedium);
+
+      await pumpOnDevice(
+        tester,
+        AppEmptyState(
+          icon: AppIcons.alarm,
+          title: 'No hay alarmas',
+          message: 'Crea una.',
+          actionSize: AppButtonSize.large,
+          action: AppAlertAction(label: 'Nueva alarma', icon: AppIcons.alarmPlus, onPressed: () {}),
+        ),
+      );
+      expect(tester.getSize(find.byType(AppButton)).height, AppSizes.controlLarge);
     });
 
     testWidgets('AppPhotoScrim es un degradado de 371 que no recibe toques', (WidgetTester tester) async {

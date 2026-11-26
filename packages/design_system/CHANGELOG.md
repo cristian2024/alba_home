@@ -2,6 +2,10 @@
 
 ## 0.1.2 - 2026-11-26
 
+### Añadido
+
+- `AppEmptyState.actionSize`: la acción puede ser grande (72), como en la lista de alarmas vacía de Penpot. Por defecto sigue siendo de 48.
+
 ### Corregido
 
 - `AppFullScreenAlert` de noche: la acción principal va rellena en ámbar (`AppButtonVariant.nightPrimary`), como `Alert/FullScreen/Night` en Penpot; antes las dos acciones salían iguales.

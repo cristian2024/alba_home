@@ -58,7 +58,7 @@ Los estados y avisos reciben además `AppUrgency`: `normal`, `warning` (ocre) o 
 | `AppStepper` | `Settings/Stepper` | Botones − y + de 48 alrededor de un valor. |
 | `AppWheelPicker` | `Wheel/Picker/*` | Rueda de números sin teclado (opcionalmente en bucle). Se ajusta con subir y bajar en TalkBack. |
 | `AppSoundTile` | `Sound/Tile/*` | Sonido de 196 × 156, seleccionado o no, también de noche. |
-| `AppEmptyState` | `Empty/State` | Icono, título, explicación y acción opcional. |
+| `AppEmptyState` | `Empty/State` | Icono, título, explicación y acción opcional, de 48 o de 72 (`actionSize`). |
 | `AppPhotoScrim` | Degradado de la foto | 371 de alto, sólido al 72 % hasta el 42 %. |
 
 ### Diferencias con Penpot
