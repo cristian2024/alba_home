@@ -35,26 +35,31 @@ class AlarmEditScreen extends StatelessWidget {
   }
 
   Future<bool> _confirmDiscard(BuildContext context, AlarmEditState state) async {
-    final AlarmTranslations$alarm$es strings = alarmStrings.alarm;
+    final AlarmTranslations$alarm$discard$es discardStrings = alarmStrings.alarm.discard;
     final AlarmDraft original = state.original;
     final bool? discard = await Navigator.of(context).push<bool>(
       MaterialPageRoute<bool>(
         fullscreenDialog: true,
-        builder: (BuildContext context) => AppFullScreenAlert(
-          icon: AppIcons.pencil,
-          title: strings.discard.title,
-          subtitle: state.isNew
-              ? strings.discard.bodyNew
-              : strings.discard.body(time: AlarmFormat.timeOf(original.time), repeat: AlarmFormat.repeatLong(original.repeat)),
-          secondary: AppAlertAction(
-            label: strings.discard.discard,
-            icon: AppIcons.trash,
-            onPressed: () => Navigator.of(context).pop(true),
-          ),
-          primary: AppAlertAction(
-            label: strings.discard.keep,
+        builder: (BuildContext context) => Scaffold(
+          body: AppFullScreenAlert(
             icon: AppIcons.pencil,
-            onPressed: () => Navigator.of(context).pop(false),
+            title: discardStrings.title,
+            subtitle: state.isNew
+                ? discardStrings.bodyNew
+                : discardStrings.body(
+                    time: AlarmFormat.timeOf(original.time),
+                    repeat: AlarmFormat.repeatLong(original.repeat),
+                  ),
+            secondary: AppAlertAction(
+              label: discardStrings.discard,
+              icon: AppIcons.x,
+              onPressed: () => Navigator.of(context).pop(true),
+            ),
+            primary: AppAlertAction(
+              label: discardStrings.keep,
+              icon: AppIcons.pencil,
+              onPressed: () => Navigator.of(context).pop(false),
+            ),
           ),
         ),
       ),
@@ -87,6 +92,7 @@ class AlarmEditScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final AlarmTranslations$alarm$es strings = alarmStrings.alarm;
+    final AlarmTranslations$alarm$edit$es editStrings = strings.edit;
     final AppThemeColors theme = AppThemeColors.of(context);
     return BlocBuilder<AlarmEditCubit, AlarmEditState>(
       builder: (BuildContext context, AlarmEditState state) {
@@ -106,14 +112,12 @@ class AlarmEditScreen extends StatelessWidget {
                   : Column(
                       children: <Widget>[
                         AlarmHeader(
-                          title: state.isNew ? strings.edit.titleNew : strings.edit.titleEdit,
-                          subtitle: strings.edit.ringsIn(
-                            remaining: AlarmFormat.remaining(cubit.untilNextRing()),
-                          ),
+                          title: state.isNew ? editStrings.titleNew : editStrings.titleEdit,
+                          subtitle: editStrings.ringsIn(remaining: AlarmFormat.remaining(cubit.untilNextRing())),
                           leading: AppIcons.x,
                           leadingLabel: strings.discard.discard,
                           onLeading: () => _close(context),
-                          action: AppButton(label: strings.edit.save, icon: AppIcons.check, onPressed: () => _save(context)),
+                          action: AppButton(label: editStrings.save, icon: AppIcons.check, onPressed: () => _save(context)),
                         ),
                         Expanded(
                           child: Padding(
@@ -128,7 +132,7 @@ class AlarmEditScreen extends StatelessWidget {
                                         AppWheelPicker(
                                           values: _hours,
                                           selectedIndex: draft.time.hour,
-                                          semanticLabel: strings.edit.hours,
+                                          semanticLabel: editStrings.hours,
                                           loop: true,
                                           onChanged: cubit.setHour,
                                         ),
@@ -145,7 +149,7 @@ class AlarmEditScreen extends StatelessWidget {
                                         AppWheelPicker(
                                           values: _minutes,
                                           selectedIndex: draft.time.minute,
-                                          semanticLabel: strings.edit.minutes,
+                                          semanticLabel: editStrings.minutes,
                                           loop: true,
                                           onChanged: cubit.setMinute,
                                         ),
@@ -160,8 +164,8 @@ class AlarmEditScreen extends StatelessWidget {
                                     spacing: AppSpacing.s200,
                                     children: <Widget>[
                                       AppSettingsField(
-                                        label: strings.edit.name,
-                                        value: draft.label.isEmpty ? strings.edit.noName : draft.label,
+                                        label: editStrings.name,
+                                        value: draft.label.isEmpty ? editStrings.noName : draft.label,
                                         onTap: () async {
                                           final String? label = await showAlarmNameDialog(context, draft.label);
                                           if (label != null) {
@@ -170,17 +174,14 @@ class AlarmEditScreen extends StatelessWidget {
                                         },
                                       ),
                                       AppSettingsField(
-                                        label: strings.edit.repeat,
-                                        value: AlarmFormat.repeatShort(
-                                          draft.repeat,
-                                          ringsToday: cubit.ringsToday(),
-                                        ),
+                                        label: editStrings.repeat,
+                                        value: AlarmFormat.repeatShort(draft.repeat, ringsToday: cubit.ringsToday()),
                                         onTap: () => _editRepeat(context, state),
                                       ),
                                       AppSettingsField(
-                                        label: strings.edit.sound,
+                                        label: editStrings.sound,
                                         value:
-                                            '${AlarmFormat.soundName(draft.soundId)} · ${strings.edit.soundDetail(minutes: draft.rise.inMinutes)}',
+                                            '${AlarmFormat.soundName(draft.soundId)} · ${editStrings.soundDetail(minutes: draft.rise.inMinutes)}',
                                         onTap: () async {
                                           final AlarmSound? sound = await showAlarmSoundDialog(context, draft.soundId);
                                           if (sound != null) {
@@ -189,16 +190,19 @@ class AlarmEditScreen extends StatelessWidget {
                                         },
                                       ),
                                       AppSettingsField(
-                                        label: strings.edit.snooze,
+                                        label: editStrings.snooze,
                                         value:
-                                            '${strings.edit.snoozeValue(minutes: draft.snooze.inMinutes)} · ${strings.edit.snoozeDetail(count: draft.maxSnoozes)}',
+                                            '${editStrings.snoozeValue(minutes: draft.snooze.inMinutes)} · ${editStrings.snoozeDetail(count: draft.maxSnoozes)}',
                                         onTap: () async {
                                           final SnoozeChoice? choice = await showAlarmSnoozeDialog(
                                             context,
                                             SnoozeChoice(minutes: draft.snooze.inMinutes, times: draft.maxSnoozes),
                                           );
                                           if (choice != null) {
-                                            cubit.setSnooze(snooze: Duration(minutes: choice.minutes), maxSnoozes: choice.times);
+                                            cubit.setSnooze(
+                                              snooze: Duration(minutes: choice.minutes),
+                                              maxSnoozes: choice.times,
+                                            );
                                           }
                                         },
                                       ),
@@ -227,14 +231,14 @@ class _DeleteButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final AppThemeColors theme = AppThemeColors.of(context);
-    final AlarmTranslations$alarm$es strings = alarmStrings.alarm;
+    final AlarmTranslations$alarm$edit$es editStrings = alarmStrings.alarm.edit;
     return Padding(
       padding: const EdgeInsets.only(top: AppSpacing.s400),
       child: AppPressable(
         onTap: onPressed,
         pressedColor: theme.bgDangerSubtle,
         borderRadius: BorderRadius.circular(AppRadii.full),
-        semanticLabel: strings.edit.delete,
+        semanticLabel: editStrings.delete,
         child: SizedBox(
           height: AppSizes.controlMedium,
           child: Padding(
@@ -244,7 +248,7 @@ class _DeleteButton extends StatelessWidget {
               spacing: AppSpacing.s200,
               children: <Widget>[
                 AppIcon(AppIcons.trash, size: AppSizes.iconSmall, color: theme.textDanger),
-                Text(strings.edit.delete, style: AppTypography.label.copyWith(color: theme.textDanger)),
+                Text(editStrings.delete, style: AppTypography.label.copyWith(color: theme.textDanger)),
               ],
             ),
           ),

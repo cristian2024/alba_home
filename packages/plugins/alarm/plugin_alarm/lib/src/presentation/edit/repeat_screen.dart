@@ -32,7 +32,7 @@ class _RepeatScreenState extends State<RepeatScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final AlarmTranslations$alarm$es strings = alarmStrings.alarm;
+    final AlarmTranslations$alarm$repeatScreen$es repeatScreenStrings = alarmStrings.alarm.repeatScreen;
     final AppThemeColors theme = AppThemeColors.of(context);
     return PopScope<Set<Weekday>>(
       canPop: false,
@@ -46,9 +46,9 @@ class _RepeatScreenState extends State<RepeatScreen> {
           child: Column(
             children: <Widget>[
               AlarmHeader(
-                title: strings.repeatScreen.title,
+                title: repeatScreenStrings.title,
                 leading: AppIcons.chevronLeft,
-                leadingLabel: strings.repeatScreen.done,
+                leadingLabel: repeatScreenStrings.done,
                 onLeading: _done,
               ),
               const SizedBox(height: AppSpacing.s400),
@@ -71,9 +71,9 @@ class _RepeatScreenState extends State<RepeatScreen> {
                 spacing: AppSpacing.s400,
                 children: <Widget>[
                   for (final (String label, Set<Weekday> preset) in <(String, Set<Weekday>)>[
-                    (strings.repeatScreen.presetEveryDay, Weekday.everyDay),
-                    (strings.repeatScreen.presetWeekdays, Weekday.weekdays),
-                    (strings.repeatScreen.presetWeekend, Weekday.weekend),
+                    (repeatScreenStrings.presetEveryDay, Weekday.everyDay),
+                    (repeatScreenStrings.presetWeekdays, Weekday.weekdays),
+                    (repeatScreenStrings.presetWeekend, Weekday.weekend),
                   ])
                     _PresetChip(label: label, selected: _is(preset), onTap: () => setState(() => _days = <Weekday>{...preset})),
                 ],
@@ -81,8 +81,8 @@ class _RepeatScreenState extends State<RepeatScreen> {
               const SizedBox(height: AppSpacing.s1000),
               Text(
                 _days.isEmpty
-                    ? strings.repeatScreen.noDays
-                    : '${strings.repeatScreen.summary(days: AlarmFormat.repeatLong(_days), time: AlarmFormat.timeOf(widget.time))}\n${strings.repeatScreen.noDays}',
+                    ? repeatScreenStrings.noDays
+                    : '${repeatScreenStrings.summary(days: AlarmFormat.repeatLong(_days), time: AlarmFormat.timeOf(widget.time))}\n${repeatScreenStrings.noDays}',
                 textAlign: TextAlign.center,
                 style: AppTypography.body.copyWith(color: theme.textSecondary),
               ),

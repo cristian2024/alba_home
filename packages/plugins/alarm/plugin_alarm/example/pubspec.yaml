@@ -24,7 +24,7 @@ dependencies:
       path: packages/shared/core_ui
       tag_pattern: core_ui-v{{version}}
     version: ^0.1.3
-  design_system: ^0.1.1
+  design_system: ^0.1.2
   flutter:
     sdk: flutter
   go_router: ">=14.0.0 <17.0.0"

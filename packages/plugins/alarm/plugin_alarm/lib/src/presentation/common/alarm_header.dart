@@ -29,25 +29,37 @@ class AlarmHeader extends StatelessWidget {
     return Padding(
       // 0 + 72 + 16: el contenido empieza en y = 88, como en Penpot.
       padding: const EdgeInsets.fromLTRB(AppSpacing.s200, 0, AppSpacing.s800, AppSpacing.s400),
-      child: Row(
-        children: <Widget>[
-          if (icon != null)
-            AppIconButton(icon: icon, semanticLabel: leadingLabel, variant: AppButtonVariant.ghost, onPressed: onLeading)
-          else
-            const SizedBox(width: AppSpacing.s600),
-          const SizedBox(width: AppSpacing.s200),
-          Semantics(header: true, child: Text(title, style: AppTypography.title.copyWith(color: theme.textPrimary))),
-          const SizedBox(width: AppSpacing.s400),
-          Expanded(
-            child: Text(
-              subtitle,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              style: AppTypography.body.copyWith(color: theme.textSecondary),
+      // 72 aunque no haya botón de volver ni acción grande.
+      child: SizedBox(
+        height: AppSizes.controlLarge,
+        child: Row(
+          children: <Widget>[
+            if (icon != null)
+              AppIconButton(
+                icon: icon,
+                semanticLabel: leadingLabel,
+                variant: AppButtonVariant.ghost,
+                onPressed: onLeading,
+              )
+            else
+              const SizedBox(width: AppSpacing.s600),
+            const SizedBox(width: AppSpacing.s200),
+            Semantics(
+              header: true,
+              child: Text(title, style: AppTypography.title.copyWith(color: theme.textPrimary)),
             ),
-          ),
-          ?trailing,
-        ],
+            const SizedBox(width: AppSpacing.s400),
+            Expanded(
+              child: Text(
+                subtitle,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: AppTypography.body.copyWith(color: theme.textSecondary),
+              ),
+            ),
+            ?trailing,
+          ],
+        ),
       ),
     );
   }

@@ -39,15 +39,26 @@ class AlarmRingingScreen extends StatelessWidget {
   }
 }
 
-class _RingingBody extends StatelessWidget {
+class _RingingBody extends StatefulWidget {
   const _RingingBody({required this.ringing, required this.night});
 
   final RingingAlarm ringing;
   final bool night;
 
   @override
+  State<_RingingBody> createState() => _RingingBodyState();
+}
+
+class _RingingBodyState extends State<_RingingBody> {
+  /// Manteniendo para apagar: la pista de abajo deja sitio a la barra (03.5b).
+  bool _holding = false;
+
+  RingingAlarm get ringing => widget.ringing;
+  bool get night => widget.night;
+
+  @override
   Widget build(BuildContext context) {
-    final AlarmTranslations$alarm$es strings = alarmStrings.alarm;
+    final AlarmTranslations$alarm$ringing$es ringingStrings = alarmStrings.alarm.ringing;
     final AppThemeColors theme = AppThemeColors.of(context);
     final RingingCubit cubit = context.read<RingingCubit>();
     final Alarm alarm = ringing.alarm;
@@ -57,8 +68,8 @@ class _RingingBody extends StatelessWidget {
     final String label = AlarmFormat.label(alarm);
     final Color secondaryText = night ? AppNightColors.textSecondary : theme.textSecondary;
     final String hint = canSnooze
-        ? '${strings.ringing.tapAnywhere} · ${strings.ringing.snoozesLeft(n: session.snoozesLeft(alarm))}'
-        : strings.ringing.noSnoozesLeft;
+        ? '${ringingStrings.tapAnywhere} · ${ringingStrings.snoozesLeft(n: session.snoozesLeft(alarm))}'
+        : ringingStrings.noSnoozesLeft;
     return GestureDetector(
       behavior: HitTestBehavior.opaque,
       onTap: canSnooze ? cubit.snooze : null,
@@ -76,10 +87,7 @@ class _RingingBody extends StatelessWidget {
             ),
             Expanded(
               child: Center(
-                child: AppClockTime(
-                  AlarmFormat.paddedOf(alarm.time),
-                  tone: night ? AppTone.night : AppTone.surface,
-                ),
+                child: AppClockTime(AlarmFormat.paddedOf(alarm.time), tone: night ? AppTone.night : AppTone.surface),
               ),
             ),
             Row(
@@ -88,25 +96,32 @@ class _RingingBody extends StatelessWidget {
               spacing: AppSpacing.s600,
               children: <Widget>[
                 HoldToDismissButton(
-                  label: strings.ringing.holdToDismiss,
-                  holdingLabel: strings.ringing.holding,
-                  semanticLabel: strings.ringing.dismissSemantic(label: label),
+                  label: ringingStrings.holdToDismiss,
+                  holdingLabel: ringingStrings.holding,
+                  semanticLabel: ringingStrings.dismissSemantic(label: label),
                   variant: night ? AppButtonVariant.night : AppButtonVariant.secondary,
                   onDismiss: cubit.dismiss,
+                  onHoldingChanged: (bool holding) => setState(() => _holding = holding),
                 ),
                 if (canSnooze)
                   AppButton(
-                    label: strings.ringing.snooze(minutes: minutes),
+                    label: ringingStrings.snooze(minutes: minutes),
                     icon: AppIcons.timer,
                     variant: night ? AppButtonVariant.nightPrimary : AppButtonVariant.primary,
-                    semanticLabel: strings.ringing.snoozeSemantic(minutes: minutes),
+                    semanticLabel: ringingStrings.snoozeSemantic(minutes: minutes),
                     onPressed: cubit.snooze,
                   ),
               ],
             ),
             Padding(
               padding: const EdgeInsets.only(bottom: AppSpacing.s400),
-              child: Text(hint, style: AppTypography.caption.copyWith(color: secondaryText)),
+              child: Visibility(
+                visible: !_holding,
+                maintainSize: true,
+                maintainAnimation: true,
+                maintainState: true,
+                child: Text(hint, style: AppTypography.label.copyWith(color: secondaryText)),
+              ),
             ),
           ],
         ),

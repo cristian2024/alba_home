@@ -24,6 +24,8 @@ void main() {
       await harness.pump(tester, AlarmRoutes.base);
 
       expect(find.text('No hay alarmas'), findsOneWidget);
+      expect(find.text('Nueva'), findsNothing, reason: 'vacía, la única acción es la del centro');
+      expect(tester.getSize(find.widgetWithText(AppButton, 'Nueva alarma')).height, AppSizes.controlLarge);
       await tester.tap(find.text('Nueva alarma'));
       await tester.pumpAndSettle();
       expect(find.text('Nueva alarma'), findsOneWidget);
@@ -41,6 +43,8 @@ void main() {
       await harness.pump(tester, AlarmRoutes.base);
 
       expect(find.text('Próxima: 6:30, en 7 h 13 min'), findsOneWidget);
+      // 72 y no 48 como en Penpot: decisión del proyecto (ESTADO_desarrollo.md).
+      expect(tester.getSize(find.widgetWithText(AppButton, 'Nueva')).height, AppSizes.controlLarge);
       expect(find.text('Lun a vie · suena en 7 h 13 min'), findsOneWidget);
       expect(find.text('Sáb y dom · desactivada'), findsOneWidget);
       expect(find.text('Solo mañana'), findsOneWidget);
@@ -69,6 +73,7 @@ void main() {
       await harness.pump(tester, AlarmRoutes.base);
 
       expect(find.text('Las alarmas no sonarán'), findsOneWidget);
+      expect(find.textContaining('Próxima'), findsNothing, reason: 'bloqueadas no suenan');
       expect(find.text('Lun a vie · bloqueada por Android'), findsOneWidget);
       expect(find.byType(AppSwitch), findsNothing);
 
@@ -302,8 +307,15 @@ void main() {
       await tester.pump();
       await tester.pump(const Duration(milliseconds: 600));
       expect(find.text('Sigue pulsando…'), findsOneWidget);
+      bool hintVisible() => tester
+          .widget<Visibility>(
+            find.ancestor(of: find.textContaining('Toca en cualquier sitio'), matching: find.byType(Visibility)),
+          )
+          .visible;
+      expect(hintVisible(), isFalse, reason: 'la pista deja sitio a la barra (03.5b)');
       await gesture.up();
       await tester.pumpAndSettle();
+      expect(hintVisible(), isTrue);
       final AlarmSession? afterRelease = await harness.repository.getSession();
       expect(afterRelease, isNotNull);
       expect(afterRelease!.isSnoozed, isFalse, reason: 'soltar antes no pospone');
@@ -402,7 +414,7 @@ void main() {
       expect(harness.plugin.nameKey, 'alarm.name');
       expect(harness.plugin.descriptionKey, 'alarm.description');
       expect(harness.plugin.icon, AppIcons.alarm.iconData);
-      expect(harness.plugin.version, '0.1.1');
+      expect(harness.plugin.version, '0.1.2');
       expect(harness.plugin.entryRoute, AlarmRoutes.base);
       expect(await harness.plugin.isAvailable(), isTrue);
       expect(harness.plugin.routes, hasLength(5));
