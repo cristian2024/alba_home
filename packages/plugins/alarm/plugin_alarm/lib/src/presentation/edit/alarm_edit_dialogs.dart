@@ -78,13 +78,13 @@ class _NameDialogState extends State<_NameDialog> {
   @override
   Widget build(BuildContext context) {
     final AppThemeColors theme = AppThemeColors.of(context);
-    final AlarmTranslations$alarm$es strings = alarmStrings.alarm;
+    final AlarmTranslations$alarm$edit$es editStrings = alarmStrings.alarm.edit;
     final OutlineInputBorder border = OutlineInputBorder(
       borderRadius: BorderRadius.circular(AppRadii.large),
       borderSide: BorderSide(color: theme.borderDefault),
     );
     return _AlarmDialog(
-      title: strings.edit.name,
+      title: editStrings.name,
       onDone: _done,
       child: TextField(
         controller: _controller,
@@ -95,7 +95,7 @@ class _NameDialogState extends State<_NameDialog> {
         onSubmitted: (String value) => _done(),
         style: AppTypography.bodyLarge.copyWith(color: theme.textPrimary),
         decoration: InputDecoration(
-          hintText: strings.edit.nameHint,
+          hintText: editStrings.nameHint,
           hintStyle: AppTypography.bodyLarge.copyWith(color: theme.textTertiary),
           filled: true,
           fillColor: theme.bgSurface,
@@ -187,24 +187,24 @@ class _SnoozeDialogState extends State<_SnoozeDialog> {
 
   @override
   Widget build(BuildContext context) {
-    final AlarmTranslations$alarm$es strings = alarmStrings.alarm;
+    final AlarmTranslations$alarm$edit$es editStrings = alarmStrings.alarm.edit;
     return _AlarmDialog(
-      title: strings.edit.snooze,
+      title: editStrings.snooze,
       onDone: () => Navigator.of(context).pop(SnoozeChoice(minutes: _minutes, times: _times)),
       child: Column(
         spacing: AppSpacing.s400,
         children: <Widget>[
           AppStepper(
-            value: strings.edit.snoozeValue(minutes: _minutes),
-            decrementLabel: '${strings.edit.snooze} −',
-            incrementLabel: '${strings.edit.snooze} +',
+            value: editStrings.snoozeValue(minutes: _minutes),
+            decrementLabel: '${editStrings.snooze} −',
+            incrementLabel: '${editStrings.snooze} +',
             onDecrement: _minutes > _minMinutes ? () => setState(() => _minutes -= _step) : null,
             onIncrement: _minutes < _maxMinutes ? () => setState(() => _minutes += _step) : null,
           ),
           AppStepper(
-            value: strings.edit.snoozeDetail(count: _times),
-            decrementLabel: '${strings.edit.snoozeDetail(count: _times)} −',
-            incrementLabel: '${strings.edit.snoozeDetail(count: _times)} +',
+            value: editStrings.snoozeDetail(count: _times),
+            decrementLabel: '${editStrings.snoozeDetail(count: _times)} −',
+            incrementLabel: '${editStrings.snoozeDetail(count: _times)} +',
             onDecrement: _times > _minTimes ? () => setState(() => _times--) : null,
             onIncrement: _times < _maxTimes ? () => setState(() => _times++) : null,
           ),

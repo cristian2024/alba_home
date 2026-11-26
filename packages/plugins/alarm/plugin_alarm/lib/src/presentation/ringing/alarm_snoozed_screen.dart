@@ -18,7 +18,7 @@ class AlarmSnoozedScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final AlarmTranslations$alarm$es strings = alarmStrings.alarm;
+    final AlarmTranslations$alarm$snoozed$es snoozedStrings = alarmStrings.alarm.snoozed;
     final bool night = AppToneScope.of(context) == AppTone.night;
     return BlocConsumer<RingingCubit, RingingState>(
       listenWhen: (RingingState previous, RingingState current) =>
@@ -33,16 +33,16 @@ class AlarmSnoozedScreen extends StatelessWidget {
         return Scaffold(
           body: AppFullScreenAlert(
             icon: AppIcons.timer,
-            title: strings.snoozed.title(time: AlarmFormat.localTime(until, wallClock)),
-            subtitle: strings.snoozed.detail(
+            title: snoozedStrings.title(time: AlarmFormat.localTime(until, wallClock)),
+            subtitle: snoozedStrings.detail(
               label: AlarmFormat.label(ringing.alarm),
               used: ringing.session.snoozesUsed,
               max: ringing.alarm.maxSnoozes,
             ),
             variant: night ? AppFullScreenVariant.night : AppFullScreenVariant.normal,
-            secondary: AppAlertAction(label: strings.snoozed.keepSleeping, icon: AppIcons.moon, onPressed: onClose),
+            secondary: AppAlertAction(label: snoozedStrings.keepSleeping, icon: AppIcons.moon, onPressed: onClose),
             primary: AppAlertAction(
-              label: strings.snoozed.turnOff,
+              label: snoozedStrings.turnOff,
               icon: AppIcons.alarmOff,
               onPressed: () => context.read<RingingCubit>().dismiss(),
             ),

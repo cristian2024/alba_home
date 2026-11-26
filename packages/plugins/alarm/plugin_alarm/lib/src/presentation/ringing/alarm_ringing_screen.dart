@@ -58,7 +58,7 @@ class _RingingBodyState extends State<_RingingBody> {
 
   @override
   Widget build(BuildContext context) {
-    final AlarmTranslations$alarm$es strings = alarmStrings.alarm;
+    final AlarmTranslations$alarm$ringing$es ringingStrings = alarmStrings.alarm.ringing;
     final AppThemeColors theme = AppThemeColors.of(context);
     final RingingCubit cubit = context.read<RingingCubit>();
     final Alarm alarm = ringing.alarm;
@@ -68,8 +68,8 @@ class _RingingBodyState extends State<_RingingBody> {
     final String label = AlarmFormat.label(alarm);
     final Color secondaryText = night ? AppNightColors.textSecondary : theme.textSecondary;
     final String hint = canSnooze
-        ? '${strings.ringing.tapAnywhere} · ${strings.ringing.snoozesLeft(n: session.snoozesLeft(alarm))}'
-        : strings.ringing.noSnoozesLeft;
+        ? '${ringingStrings.tapAnywhere} · ${ringingStrings.snoozesLeft(n: session.snoozesLeft(alarm))}'
+        : ringingStrings.noSnoozesLeft;
     return GestureDetector(
       behavior: HitTestBehavior.opaque,
       onTap: canSnooze ? cubit.snooze : null,
@@ -96,19 +96,19 @@ class _RingingBodyState extends State<_RingingBody> {
               spacing: AppSpacing.s600,
               children: <Widget>[
                 HoldToDismissButton(
-                  label: strings.ringing.holdToDismiss,
-                  holdingLabel: strings.ringing.holding,
-                  semanticLabel: strings.ringing.dismissSemantic(label: label),
+                  label: ringingStrings.holdToDismiss,
+                  holdingLabel: ringingStrings.holding,
+                  semanticLabel: ringingStrings.dismissSemantic(label: label),
                   variant: night ? AppButtonVariant.night : AppButtonVariant.secondary,
                   onDismiss: cubit.dismiss,
                   onHoldingChanged: (bool holding) => setState(() => _holding = holding),
                 ),
                 if (canSnooze)
                   AppButton(
-                    label: strings.ringing.snooze(minutes: minutes),
+                    label: ringingStrings.snooze(minutes: minutes),
                     icon: AppIcons.timer,
                     variant: night ? AppButtonVariant.nightPrimary : AppButtonVariant.primary,
-                    semanticLabel: strings.ringing.snoozeSemantic(minutes: minutes),
+                    semanticLabel: ringingStrings.snoozeSemantic(minutes: minutes),
                     onPressed: cubit.snooze,
                   ),
               ],
