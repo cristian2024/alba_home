@@ -1,0 +1,19 @@
+name: clock_contract
+description: API pública del reloj para otros plugins y la app, en Dart puro. La fase de noche (NightModeQuery) para el tono de noche y las horas de silencio.
+version: 0.1.0
+publish_to: none
+
+environment:
+  sdk: ^3.11.0
+
+resolution: workspace
+
+dependencies:
+  # Solo para los tests de contrato (StreamQueue).
+  async: ^2.11.0
+  equatable: ^3.0.0
+  # Solo para los tests de contrato de `package:clock_contract/testing.dart`.
+  test: ^1.28.0
+
+dev_dependencies:
+  flutter_lints: ^6.0.0
