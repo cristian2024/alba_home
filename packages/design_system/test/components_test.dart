@@ -799,6 +799,17 @@ void main() {
       expect(find.descendant(of: find.byType(AppPhotoScrim), matching: find.byType(IgnorePointer)), findsOneWidget);
     });
 
+    testWidgets('AppPhotoScrim con otra opacidad en el tramo sólido', (WidgetTester tester) async {
+      await pumpOnDevice(tester, const SizedBox(width: 891, height: 411, child: AppPhotoScrim(opacity: 0.85)));
+
+      final DecoratedBox box = tester.widget<DecoratedBox>(
+        find.descendant(of: find.byType(AppPhotoScrim), matching: find.byType(DecoratedBox)),
+      );
+      final LinearGradient gradient = (box.decoration as BoxDecoration).gradient! as LinearGradient;
+      expect(gradient.colors.first.a, closeTo(0.85, 0.01));
+      expect(gradient.colors[1].a, closeTo(0.85, 0.01));
+    });
+
     testWidgets('el glifo de AlbaIcons se dibuja como un icono de Flutter', (WidgetTester tester) async {
       await pumpOnDevice(tester, Icon(AppIcons.alarm.iconData, size: 48));
 
