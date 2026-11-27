@@ -1,0 +1,30 @@
+{
+  "clock": {
+    "name": "Reloj",
+    "description": "La hora, la fecha y la foto del día, con el modo noche a su hora.",
+    "date": "{weekday}, {day} de {month}",
+    "weekdays": ["lunes", "martes", "miércoles", "jueves", "viernes", "sábado", "domingo"],
+    "months": ["enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agosto", "septiembre", "octubre", "noviembre", "diciembre"],
+    "timeSemantic": "Son las {time}, {date}. Mantén pulsada la hora para abrir ajustes.",
+    "settings": {
+      "holding": "Sigue pulsando para abrir ajustes",
+      "hint": "Mantén pulsada la hora para abrir ajustes"
+    },
+    "nightMode": {
+      "status": "Modo noche",
+      "statusSemantic": "El modo noche empieza a las {time}"
+    },
+    "nightSchedule": {
+      "title": "Horario de noche",
+      "back": "Volver",
+      "starts": "Empieza",
+      "ends": "Termina",
+      "startHours": "Horas de inicio",
+      "startMinutes": "Minutos de inicio",
+      "endHours": "Horas de fin",
+      "endMinutes": "Minutos de fin",
+      "note": "La pantalla se funde a negro y ámbar en los 30 min anteriores y vuelve en 15 min al amanecer.",
+      "sameTime": "La noche no puede empezar y terminar a la misma hora."
+    }
+  }
+}

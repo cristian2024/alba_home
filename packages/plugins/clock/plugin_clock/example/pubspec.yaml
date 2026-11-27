@@ -1,0 +1,51 @@
+name: clock_example
+description: App de ejemplo del plugin del reloj, con horario, fotos y bloques en memoria y botones para saltar a la hora de cada pantalla de Penpot.
+publish_to: none
+version: 0.1.0+1
+
+environment:
+  sdk: ^3.11.0
+  flutter: ">=3.27.0"
+
+resolution: workspace
+
+dependencies:
+  clock_domain: ^0.1.0
+  core_contracts:
+    git:
+      url: https://github.com/cristian2024/flutter_shared.git
+      path: packages/core/core_contracts
+      tag_pattern: core_contracts-v{{version}}
+    version: ^0.1.4
+  core_di:
+    git:
+      url: https://github.com/cristian2024/flutter_shared.git
+      path: packages/core/core_di
+      tag_pattern: core_di-v{{version}}
+    version: ^0.1.2
+  core_ui:
+    git:
+      url: https://github.com/cristian2024/flutter_shared.git
+      path: packages/shared/core_ui
+      tag_pattern: core_ui-v{{version}}
+    version: ^0.1.3
+  core_utils:
+    git:
+      url: https://github.com/cristian2024/flutter_shared.git
+      path: packages/shared/core_utils
+      tag_pattern: core_utils-v{{version}}
+    version: ^0.1.2
+  design_system: ^0.1.3
+  flutter:
+    sdk: flutter
+  go_router: ">=14.0.0 <17.0.0"
+  photo_frame_contract: ^0.1.0
+  plugin_clock: ^0.1.0
+
+dev_dependencies:
+  flutter_lints: ^6.0.0
+  flutter_test:
+    sdk: flutter
+
+flutter:
+  uses-material-design: true

@@ -1,0 +1,30 @@
+{
+  "clock": {
+    "name": "Clock",
+    "description": "The time, the date and the photo of the day, with night mode on schedule.",
+    "date": "{weekday}, {month} {day}",
+    "weekdays": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
+    "months": ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
+    "timeSemantic": "It's {time}, {date}. Hold the time to open settings.",
+    "settings": {
+      "holding": "Keep holding to open settings",
+      "hint": "Hold the time to open settings"
+    },
+    "nightMode": {
+      "status": "Night mode",
+      "statusSemantic": "Night mode starts at {time}"
+    },
+    "nightSchedule": {
+      "title": "Night schedule",
+      "back": "Back",
+      "starts": "Starts",
+      "ends": "Ends",
+      "startHours": "Start hours",
+      "startMinutes": "Start minutes",
+      "endHours": "End hours",
+      "endMinutes": "End minutes",
+      "note": "The screen fades to black and amber over the 30 min before and comes back over 15 min at dawn.",
+      "sameTime": "Night can't start and end at the same time."
+    }
+  }
+}
