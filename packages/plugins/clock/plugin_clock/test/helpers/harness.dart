@@ -121,7 +121,9 @@ class Harness {
       ],
     );
     addTearDown(router.dispose);
-    await tester.pumpWidget(MaterialApp.router(theme: theme ?? AppTheme.light, routerConfig: router));
+    await tester.pumpWidget(
+      MaterialApp.router(debugShowCheckedModeBanner: false, theme: theme ?? AppTheme.light, routerConfig: router),
+    );
     await tester.pump();
     await tester.pump();
     return router;

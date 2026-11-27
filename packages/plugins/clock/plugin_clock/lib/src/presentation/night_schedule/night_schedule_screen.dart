@@ -53,7 +53,8 @@ class NightScheduleScreen extends StatelessWidget {
                 ),
                 Expanded(
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: AppSpacing.s1000),
+                    // Como en Penpot: «Termina» acaba a 72 del borde derecho.
+                    padding: const EdgeInsets.only(left: AppSpacing.s1000, right: AppSpacing.s1600 + AppSpacing.s200),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: <Widget>[
