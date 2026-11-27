@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.1.3 - 2026-11-26
+
+### Añadido
+
+- `AppPhotoScrim.opacity`: el tramo sólido del degradado puede ir más opaco que el 72 % del token, para fotos muy claras.
+
 ## 0.1.2 - 2026-11-26
 
 ### Añadido
