@@ -1,3 +1,6 @@
+import 'dart:async';
+
+import 'package:clock_contract/clock_contract.dart';
 import 'package:core_contracts/core_contracts.dart';
 import 'package:core_ui/core_ui.dart';
 import 'package:design_system/design_system.dart';
@@ -10,11 +13,11 @@ import 'ambient/ambient_alert_navigator.dart';
 import 'ambient/ambient_host.dart';
 import 'navigation/language_routes.dart';
 
-/// Raíz de la app: tema, idioma, rutas de los plugins listos y avisos a
-/// pantalla completa.
+/// Raíz de la app: tema (de noche, negro y ámbar en todas las pantallas),
+/// idioma, rutas de los plugins listos y avisos a pantalla completa.
 ///
-/// Mientras no exista el reloj, el inicio (`/`) lleva a la pantalla del
-/// primer plugin con entrada propia.
+/// El inicio (`/`) lleva a la pantalla del primer plugin con entrada propia:
+/// el reloj.
 class AlbaApp extends StatefulWidget {
   const AlbaApp({super.key, required this.environment});
 
@@ -32,7 +35,7 @@ class AlbaApp extends StatefulWidget {
 class _AlbaAppState extends State<AlbaApp> {
   List<HomePlugin> get _plugins => widget.environment.plugins;
 
-  late final AmbientHost _ambient = AmbientHost(_plugins);
+  AmbientHost get _ambient => widget.environment.ambient;
 
   late final String? _entry = <String>[
     for (final HomePlugin plugin in _plugins)
@@ -48,8 +51,22 @@ class _AlbaAppState extends State<AlbaApp> {
     ],
   );
 
+  StreamSubscription<NightPhase>? _phase;
+  bool _night = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _phase = widget.environment.nightMode?.watchPhase().listen((NightPhase phase) {
+      if (phase.isNight != _night) {
+        setState(() => _night = phase.isNight);
+      }
+    });
+  }
+
   @override
   void dispose() {
+    unawaited(_phase?.cancel());
     _router.dispose();
     super.dispose();
   }
@@ -61,11 +78,13 @@ class _AlbaAppState extends State<AlbaApp> {
       languageCode: languageCode,
       child: ValueListenableBuilder<String>(
         valueListenable: languageCode,
-        builder: (BuildContext context, String language, Widget? child) => MaterialApp.router(
+        builder: (BuildContext context, String language, Widget? child) => AppToneScope(
+          tone: _night ? AppTone.night : AppTone.surface,
+          child: MaterialApp.router(
           title: AlbaApp.appName,
           debugShowCheckedModeBanner: false,
-          theme: AppTheme.light,
-          darkTheme: AppTheme.dark,
+          theme: _night ? AppTheme.night : AppTheme.light,
+          darkTheme: _night ? AppTheme.night : AppTheme.dark,
           locale: Locale(language),
           localizationsDelegates: LocalizationCoordinator.localizationsDelegates,
           supportedLocales: LocalizationCoordinator.supportedLocales,
@@ -75,6 +94,7 @@ class _AlbaAppState extends State<AlbaApp> {
             router: _router,
             child: child ?? const SizedBox.shrink(),
           ),
+        ),
         ),
       ),
     );

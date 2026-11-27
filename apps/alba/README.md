@@ -4,14 +4,15 @@ App de Alba: el punto de composición que ensambla los plugins (reloj, alarma, b
 
 ## Estado
 
-Compone la alarma:
+Compone el reloj y la alarma:
 
-- **Adaptadores** (`lib/src/alba_composition.dart`): `IsarStorage` con `AlarmIsar` y `AlarmSchedulerModule` (paquete `alarm`). Es el único sitio que nombra tecnologías.
-- **Plugins**: `AlarmPlugin`, con su ciclo de vida (`PluginLifecycleManager`). Un plugin que falla al iniciar no impide arrancar a los demás.
-- **Avisos**: `AmbientHost` junta los avisos de los plugins y `AmbientAlertNavigator` abre la pantalla del que gana a pantalla completa (la alarma sonando), esté donde esté la app.
+- **Adaptadores** (`lib/src/alba_composition.dart`): `IsarStorage` con `ClockIsar` y `AlarmIsar`, y `AlarmSchedulerModule` (paquete `alarm`). Es el único sitio que nombra tecnologías.
+- **Plugins**: `ClockPlugin` y `AlarmPlugin`, con su ciclo de vida (`PluginLifecycleManager`). Un plugin que falla al iniciar no impide arrancar a los demás. El reloj es el inicio.
+- **Avisos y bloques**: `AmbientHost` junta los bloques de estado y los avisos de los plugins, aplica las horas de silencio de noche y es el `AmbientFeed` del reloj. `AmbientAlertNavigator` abre la pantalla del aviso a pantalla completa que gana (la alarma sonando), esté donde esté la app.
+- **Noche**: con la fase del reloj (`NightModeQuery`), toda la app pasa a negro y ámbar.
 - **Idioma**: el del sistema (español o inglés); las páginas abiertas cambian de idioma con `LanguageRebuilder`.
 
-Mientras no exista el reloj, el inicio lleva a la lista de alarmas. El aviso genérico (sin pantalla propia), los banners y las cápsulas los dibujará el reloj.
+Mantener la hora abre, mientras no haya ajustes (fase 5), la lista de alarmas.
 
 ## Uso
 

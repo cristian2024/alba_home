@@ -3,34 +3,51 @@ import 'package:alarm_domain/testing.dart';
 import 'package:alba/src/alba_app.dart';
 import 'package:alba/src/alba_bootstrap.dart';
 import 'package:alba/src/alba_composition.dart';
+import 'package:clock_domain/clock_domain.dart';
+import 'package:clock_domain/testing.dart';
 import 'package:core_alarm_scheduler/core_alarm_scheduler.dart';
 import 'package:core_alarm_scheduler/testing.dart';
 import 'package:core_contracts/core_contracts.dart';
 import 'package:core_contracts/testing.dart';
 import 'package:core_di/core_di.dart';
 import 'package:core_ui/core_ui.dart';
+import 'package:core_utils/core_utils.dart';
 import 'package:design_system/design_system.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:go_router/go_router.dart';
 import 'package:plugin_alarm/plugin_alarm.dart';
+import 'package:plugin_clock/plugin_clock.dart';
 
 /// Los adaptadores en memoria, en lugar de Isar y del paquete `alarm`.
 class _InMemoryAdapters implements DependencyModule {
+  _InMemoryAdapters(Clock clock) : scheduler = InMemoryAlarmScheduler(clock: clock);
+
   final InMemoryAlarmRepository repository = InMemoryAlarmRepository();
-  final InMemoryAlarmScheduler scheduler = InMemoryAlarmScheduler();
+  final InMemoryAlarmScheduler scheduler;
+  final InMemoryNightScheduleRepository schedule = InMemoryNightScheduleRepository();
 
   @override
   Future<void> register(ServiceLocator services) async => services
     ..registerSingleton<PluginPreferenceRepository>(InMemoryPluginPreferenceRepository())
     ..registerSingleton<AlarmRepository>(repository)
-    ..registerSingleton<AlarmScheduler>(scheduler);
+    ..registerSingleton<AlarmScheduler>(scheduler)
+    ..registerSingleton<NightScheduleRepository>(schedule);
 }
 
 /// La alarma de verdad, sin el refresco periódico (en testWidgets queda un
 /// temporizador pendiente).
 HomePlugin _alarm(ServiceLocator locator, LocalizationCoordinator localization) =>
     AlarmPlugin(locator: locator, localization: localization, refreshEvery: null);
+
+/// El reloj de verdad, sin refresco ni tick periódicos.
+HomePlugin _clock(ServiceLocator locator, LocalizationCoordinator localization) => ClockPlugin(
+      locator: locator,
+      localization: localization,
+      settingsRoute: AlarmRoutes.base,
+      refreshEvery: null,
+      tick: null,
+    );
 
 /// Un plugin que falla al iniciar no impide arrancar a los demás.
 class _BrokenPlugin extends HomePlugin {
@@ -58,43 +75,75 @@ void main() {
   late _InMemoryAdapters adapters;
   late AlbaEnvironment environment;
 
-  Future<void> start(WidgetTester tester, {List<Alarm> alarms = const <Alarm>[]}) async {
+  /// [hour]:[minute] del 18 de noviembre de 2026 en la zona de la máquina.
+  DateTime localTime(int hour, int minute) => DateTime(2026, 11, 18, hour, minute).toUtc();
+
+  Future<void> start(WidgetTester tester, {List<Alarm> alarms = const <Alarm>[], int hour = 12, int minute = 0}) async {
     tester.view
       ..physicalSize = const Size(AppLayout.screenWidth, AppLayout.screenHeight)
       ..devicePixelRatio = 1;
     addTearDown(tester.view.reset);
-    adapters = _InMemoryAdapters();
+    final FixedClock clock = FixedClock(localTime(hour, minute));
+    adapters = _InMemoryAdapters(clock);
     for (final Alarm alarm in alarms) {
       await adapters.repository.saveAlarm(alarm);
     }
     environment = await bootstrapAlba(
       languageCode: 'es',
       adapters: <DependencyModule>[adapters],
-      plugins: <AlbaPluginFactory>[_alarm, (ServiceLocator l, LocalizationCoordinator c) => _BrokenPlugin()],
+      plugins: <AlbaPluginFactory>[_clock, _alarm, (ServiceLocator l, LocalizationCoordinator c) => _BrokenPlugin()],
       locator: ServiceLocator(),
       localization: LocalizationCoordinator(),
+      clock: clock,
     );
     await tester.pumpWidget(AlbaApp(environment: environment));
-    await tester.pumpAndSettle();
+    for (int i = 0; i < 4; i++) {
+      await tester.pump();
+    }
   }
 
   tearDown(() async {
     await environment.dispose();
     await adapters.repository.close();
     await adapters.scheduler.close();
+    await adapters.schedule.close();
   });
 
-  testWidgets('arranca en la alarma, sin el plugin que falló', (WidgetTester tester) async {
+  testWidgets('arranca en el reloj, sin el plugin que falló', (WidgetTester tester) async {
     await start(tester);
 
-    expect(environment.plugins.map((HomePlugin plugin) => plugin.id), <String>[AlarmPlugin.pluginId]);
+    expect(environment.plugins.map((HomePlugin plugin) => plugin.id), <String>[ClockPlugin.pluginId, AlarmPlugin.pluginId]);
+    expect(find.text('12:00'), findsOneWidget);
+    expect(find.text('miércoles, 18 de noviembre'), findsOneWidget);
+  });
+
+  testWidgets('el reloj muestra la próxima alarma y tocarla abre la lista', (WidgetTester tester) async {
+    final Alarm work = Alarm(id: 'work', time: AlarmTime(16, 30), label: 'Trabajo', soundId: 'sunrise');
+    await start(tester, alarms: <Alarm>[work]);
+
+    expect(find.text('16:30'), findsOneWidget);
+    expect(find.text('Alarma'), findsOneWidget);
+    await tester.tap(find.text('16:30'));
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 500));
+    expect(find.text('Trabajo'), findsOneWidget);
+  });
+
+  testWidgets('mantener la hora abre, por ahora, la lista de alarmas', (WidgetTester tester) async {
+    await start(tester);
+
+    final TestGesture gesture = await tester.startGesture(tester.getCenter(find.byType(AppClockTime)));
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 2100));
+    await gesture.up();
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 500));
     expect(find.text('No hay alarmas'), findsOneWidget);
   });
 
   testWidgets('cuando suena una alarma abre su pantalla, esté donde esté la app', (WidgetTester tester) async {
-    final Alarm work = Alarm(id: 'work', time: AlarmTime(6, 30), label: 'Trabajo', soundId: 'sunrise');
+    final Alarm work = Alarm(id: 'work', time: AlarmTime(16, 30), label: 'Trabajo', soundId: 'sunrise');
     await start(tester, alarms: <Alarm>[work]);
-    expect(find.text('Trabajo'), findsOneWidget);
 
     adapters.scheduler.fire(work.id);
     for (int i = 0; i < 5; i++) {
@@ -105,12 +154,22 @@ void main() {
     expect(find.text('Mantén para apagar'), findsOneWidget);
   });
 
+  testWidgets('de noche toda la app va en negro y ámbar', (WidgetTester tester) async {
+    await start(tester, hour: 23, minute: 17);
+
+    expect(find.text('23:17'), findsOneWidget);
+    expect(tester.widget<AppClockTime>(find.byType(AppClockTime)).tone, AppTone.night);
+    expect(AppToneScope.of(tester.element(find.byType(AppClockTime))), AppTone.night);
+  });
+
   testWidgets('cambia de idioma con el coordinador', (WidgetTester tester) async {
     await start(tester);
 
     environment.localization.setLanguage('en');
-    await tester.pumpAndSettle();
+    for (int i = 0; i < 4; i++) {
+      await tester.pump();
+    }
 
-    expect(find.text('No alarms'), findsOneWidget);
+    expect(find.text('Wednesday, November 18'), findsOneWidget);
   });
 }

@@ -1,7 +1,7 @@
 name: alba
 description: Reloj de mesa de noche y cocina. Punto de composición de Alba, que ensambla los plugins y elige los adaptadores.
 publish_to: none
-version: 0.2.0+2
+version: 0.3.0+3
 
 environment:
   sdk: ^3.11.0
@@ -12,6 +12,8 @@ resolution: workspace
 dependencies:
   alarm_isar: ^0.1.0
   alarm_scheduler_alarm: ^0.1.1
+  clock_contract: ^0.1.0
+  clock_isar: ^0.1.0
   core_contracts:
     git:
       url: https://github.com/cristian2024/flutter_shared.git
@@ -47,6 +49,7 @@ dependencies:
     sdk: flutter
   go_router: ">=14.0.0 <17.0.0"
   plugin_alarm: ^0.1.0
+  plugin_clock: ^0.1.0
   storage_isar:
     git:
       url: https://github.com/cristian2024/flutter_shared.git
@@ -55,6 +58,7 @@ dependencies:
     version: ^0.3.2
 
 dev_dependencies:
+  clock_domain: ^0.1.0
   alarm_domain: ^0.2.0
   async: ^2.11.0
   core_alarm_scheduler: ^0.1.0
