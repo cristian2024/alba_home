@@ -1,6 +1,6 @@
 # Alba · bitácora de desarrollo (fases 3 a 5)
 
-Última actualización: 2026-11-26.
+Última actualización: 2026-11-26 (reloj).
 
 ## Fase actual
 
@@ -55,7 +55,19 @@ Cuatro paquetes en `packages/core/` (añadido `packages/core/*` al workspace), D
 - `apps/alba` 0.2.0+2 (#17): compone `IsarStorage` con `AlarmIsar`, `AlarmSchedulerModule` y `AlarmPlugin` con su ciclo de vida; `AmbientHost` y `AmbientAlertNavigator` abren la pantalla de alarma sonando esté donde esté la app; idioma del sistema; `compileSdk` 37 (lo exige `permission_handler`). Mientras no haya reloj, el inicio lleva a la lista de alarmas.
 - Probado en el emulador (Android 16): suena con la app cerrada, al abrir mientras suena aparece «sonando» sin cortarse, mantener apaga y desactiva, tras reiniciar no vuelve a sonar y queda desactivada. Una vez se cortó sola a los 2 min y no se repitió.
 - Comparación con Impeccable a 891 × 411 (claro, oscuro y noche) contra los PNG de Penpot: PRs #18 (`design_system` 0.1.2: acción principal rellena de noche, sin subrayado de depuración en `AppFullScreenAlert`, `AppEmptyState.actionSize`) y #19 (`plugin_alarm` 0.1.2: cabecera de 72, lista vacía con una sola acción, sin «Próxima» con las alarmas bloqueadas, X en «Descartar», pista en `type.label`, «mantener para apagar» sin oscurecerse y con la pista oculta). En la revisión del #19, las secciones de textos leídas varias veces pasan a variables (regla en `CLAUDE.md`).
-- Siguiente: probar en el Mate 20 Lite (pantalla apagada, app cerrada, reinicio, EMUI) y visto bueno de la alarma.
+- **Visto bueno de la alarma (usuario, 2026-11-26)**, con la prueba en el Mate 20 Lite pendiente: se hará junto con la del reloj.
+
+### Fase 4 · reloj
+
+- `wall_clock` 0.1.0 (`packages/shared/`, nuevo en el workspace): `WallClock` sacado de `alarm_domain` para que lo use cualquier dominio. Pendiente: que `alarm_domain` pase a usarlo (hoy tiene su propia copia).
+- `clock_contract` 0.1.0: `NightModeQuery` y `NightPhase` (día, atardecer, noche, amanecer). `photo_frame_contract` 0.1.0: `CurrentPhotoQuery`, que implementará el plugin de fotos (decisión del usuario: el contrato ya, para que el reloj dibuje la foto desde ahora).
+- `clock_domain` 0.1.0 (Dart puro, 100 %): `NightSchedule` (22:30 a 6:45, fundido de 30 min antes y vuelta en 15 min), `NightPhases.at`, `PhotoScrim` (opacidad del degradado según la luminancia de la foto, mezcla en sRGB; con el degradado #0B0A09 al 72 % una foto blanca ya da 7,75:1, así que en la práctica se queda en el 72 %) y el repositorio del horario con tests de contrato.
+- `clock_isar` 0.1.0 (decisión del usuario: Isar para el horario): una sola fila, pasa los tests de contrato.
+- `design_system` 0.1.3: `AppPhotoScrim.opacity`.
+- `plugin_clock` 0.1.0: reloj 02.1–02.9 (foto con degradado, fondo liso sin fotos, fundido a negro, noche en negro y ámbar, bloques, banner, mantener 2 s para ajustes con barra y halo, pista tras toque corto) y horario de noche 08.2. `NightModeService` implementa `NightModeQuery`; el plugin publica el bloque «Modo noche» al atardecer. `AmbientFeed` es el puerto por el que la app le da bloques y avisos (decisión del usuario: puertos en el reloj). 28 tests; dominio y casos de uso al 100 %. `example/` con botones para saltar a la hora de cada pantalla.
+- `apps/alba` 0.3.0+3: el reloj es el inicio; `AmbientHost` junta bloques y avisos, aplica las horas de silencio de noche y es el `AmbientFeed`; de noche toda la app en negro y ámbar. Mantener la hora abre la lista de alarmas mientras no haya ajustes (fase 5).
+- Comparado con Penpot a 891 × 411 (claro, oscuro y noche): coincide en posiciones y estilos; corregida la posición de «Termina» en 08.2. La foto no se dibuja en las capturas de test, así que el fondo con foto queda por ver en el teléfono.
+- Siguiente: prueba en el Mate 20 Lite de alarma y reloj, y visto bueno del reloj.
 
 ### design_system (paso 4)
 
